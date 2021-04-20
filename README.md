@@ -2,8 +2,8 @@
 
 | Student's name | SCIPER |
 | -------------- | ------ |
-| Valentin Garnier | 258259 |
 | Alexander Apostolov | 271798 |
+| Valentin Garnier | 258259 |
 | Maina Orchampt-Mareschal | 244960 |
 
 [Milestone 1](#milestone-1) • [Milestone 2](#milestone-2) • [Milestone 3](#milestone-3)
