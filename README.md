@@ -42,10 +42,10 @@ The project targets a wide audience as music is a universal and timeless interes
 > Pre-processing of the data set you chose
 > - Show some basic statistics and get insights about the data
 
-We explored the data and we found that: we have data over 66 years. we have 4028 songs and we have more than 15% of the top 100 titles per year for the first years and around 80% for the most recent years (an average of 60% per year across the whole dataset). We have 1308 artists and 966 tags that can be groupped in 15 different genres. 
+We explored the data and we found that we have data over 66 years. We have 4028 songs and we have more than 15% of the top 100 titles per year for the first years and around 80% for the most recent years (an average of 60% per year across the whole dataset). We have 1308 artists and 966 tags that can be groupped in 15 different genres. 
 Regarding the sentiments of the songs, we have on average 7% which are classify as "negative", 16% as "positive" and 77% as "neutral". 
-We already tested the waters with two lists of colors. The first one is simple and contains 24 basic colors. The other one contains an exhaustive list of 229 names of colors.
-For the first one, we have 780 songs which contain the colors and for the second one, we have 1741. This gives us a lot of information to display already.
+We already tested the waters with two lists of colors: a small one containing 24 basic colors and a exhaustive one containing 229 more extensive colors.
+Based on the first one, we have 780 songs containing colors inside lyrics and for the second one, we have 1741. This gives us a lot of information to display already.
 After a small analysis it seems that the most frequent colors are blue, black, white, red, gold and green. 
 
 ### Related work
@@ -57,9 +57,9 @@ After a small analysis it seems that the most frequent colors are blue, black, w
 > - In case you are using a dataset that you have already explored in another context (ML or ADA course, semester project...), you are required to share the report of that work to outline the differences with the submission for this class.
 
 We were inspired by a [paper poster](https://www.wearedorothy.com/products/the-colour-of-books-original-open-edition) showing colors of books. 
-The autors from the repository that hosts the data tried to visualize how lyrics and associated data of popular songs have evolved since 1950. They made a project that shows how happy or sad a song is in the select year / genre.
+The autors from the repository that hosts the data tried to visualize how lyrics and associated data of popular songs have evolved since 1950. They made a project that shows how happy or sad a song is in the selected year / genre.
 Our approach is original because we are analyzing songs through the prism of colors. 
-Also, we are trying to bring a paper poster to life with a lot more details and functionalities.
+Also, we are trying to bring a paper poster to life with much more details and functionalities.
 
 
 ## Milestone 2 (7th May, 5pm)
