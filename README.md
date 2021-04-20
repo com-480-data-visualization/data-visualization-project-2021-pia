@@ -46,6 +46,7 @@ We explored the data and we found that: we have data over 66 years. we have 4028
 Regarding the sentiments of the songs, we have on average 7% which are classify as "negative", 16% as "positive" and 77% as "neutral". 
 We already tested the waters with two lists of colors. The first one is simple and contains 24 basic colors. The other one contains an exhaustive list of 229 names of colors.
 For the first one, we have 780 songs which contain the colors and for the second one, we have 1741. This gives us a lot of information to display already.
+After a small analysis it seems that the most frequent colors are blue, black, white, red, gold and green. 
 
 ### Related work
 
