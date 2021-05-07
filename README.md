@@ -24,7 +24,7 @@ Please, fill the following sections about your project.
 > Hint: some good pointers for finding quality publicly available datasets ([Google dataset search](https://datasetsearch.research.google.com/), [Kaggle](https://www.kaggle.com/datasets), [OpenSwissData](https://opendata.swiss/en/), [SNAP](https://snap.stanford.edu/data/) and [FiveThirtyEight](https://data.fivethirtyeight.com/)), you could use also the DataSets proposed by the ENAC (see the Announcements section on Zulip).
 
 The dataset we are going to use consists of a [subset](https://github.com/kevinschaich/billboard) of the top 100 songs from 1950 to 2015. It comes from a github repository under the MIT license. The authors of the dataset have encountered some problems while scrapping the lyrics from [lyrics wikia](http://lyrics.wikia.com/wiki/Lyrics_Wiki) hence some entries are missing, especially for songs written before the 70's.      
-We have information about the lyrics, artists, titles, tags, genres, sentiments, complexity of the text and repetition of the lyrics. In order to answer our problematic we will need to detect color words in the lyrics and find an appropriate context for each color.
+We have information about the lyrics, artists, titles, tags, genres, sentiments, complexity of the text and repetition of the lyrics. In order to answer our problematic we will need to detect color words in the lyrics and find an appropriate context for each color to present in the vizualization (eg. "the blue sky" instead of just "blue").
 
 ### Problematic
 
