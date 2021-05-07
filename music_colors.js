@@ -104,13 +104,21 @@ whenDocumentLoaded(() => {
 						});
 				 })
 				 .style("fill", function(d, i) {
-					 return d.random_rgb;
+					 return 'transparent';
 				 })
 				 .on('mouseover', function(d, i) {
 				   d3.select(this).style('opacity', '0.5');
 				 })
 				 .on('mouseout', function(d) {
 					 d3.select(this).style('opacity', '1.0');
+				 })
+				 .transition()
+				 .duration(30)
+					.delay(function(d, i) {
+ 					  return i * 1;
+ 					})
+				 .style("fill", function(d, i){
+					 return d.random_rgb;
 				 })
 				 /*
 				 .on("click", function(d, i, index) {
