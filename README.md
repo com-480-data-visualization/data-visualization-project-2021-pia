@@ -24,7 +24,7 @@ Please, fill the following sections about your project.
 > Hint: some good pointers for finding quality publicly available datasets ([Google dataset search](https://datasetsearch.research.google.com/), [Kaggle](https://www.kaggle.com/datasets), [OpenSwissData](https://opendata.swiss/en/), [SNAP](https://snap.stanford.edu/data/) and [FiveThirtyEight](https://data.fivethirtyeight.com/)), you could use also the DataSets proposed by the ENAC (see the Announcements section on Zulip).
 
 The dataset we are going to use consists of a [subset](https://github.com/kevinschaich/billboard) of the top 100 songs from 1950 to 2015. It comes from a github repository under the MIT license. The authors of the dataset have encountered some problems while scrapping the lyrics from [lyrics wikia](http://lyrics.wikia.com/wiki/Lyrics_Wiki) hence some entries are missing, especially for songs written before the 70's.      
-We have information about the lyrics, artists, titles, tags, genres, sentiments, complexity of the text and repetition of the lyrics. In order to answer our problematic we will need to detect color words in the lyrics and find an appropriate context for each color to present in the vizualization (eg. "the blue sky" instead of just "blue").
+We have information about the lyrics, artists, titles, tags, genres, sentiments, complexity of the text and repetition of the lyrics. In order to answer our problematic we will need to detect color words in the lyrics and find an appropriate context for each color to present in the visualization (eg. "the blue sky" instead of just "blue").
 
 ### Problematic
 
@@ -66,10 +66,10 @@ Also, we are trying to bring a paper poster to life with much more details and f
 
 **10% of the final grade**
 
-### Sketch of the vizulization
-> Include sketches of the vizualization you want to make in your final product.
+### Sketch of the visulization
+> Include sketches of the visualization you want to make in your final product.
 
-Below you can find a sketch of what we want our vizualization to look like and below it there is a screenshot of what we have already achieved:
+Below you can find a sketch of what we want our visualization to look like and below it there is a screenshot of what we have already achieved:
 
 ![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/Sketch.jpeg?raw=true)
 
@@ -94,7 +94,7 @@ Since we will be dealing a lot with colors and how to display them, we will need
 To preprocess the data we will need:
 - knowledge about Pandas and how to handle text (week 9)
 
-Finally, to make sure our vizualization is useful, beautiful and appealing to the user, we will use the guidelines stated in the lectures of week 7 (Designing vizualizations and Do's and dont's of data vizualization).
+Finally, to make sure our visualization is useful, beautiful and appealing to the user, we will use the guidelines stated in the lectures of week 7 (Designing visualizations and Do's and dont's of data visualization).
 
 ### Goals of the project
 > Break down your goal into independent pieces to implement. Try to design a
@@ -105,7 +105,7 @@ project.
 
 There are 4 big parts needed to be completed for our projet:
 1. Processing the songs and their colors.
-2. Drawing the main vizualization (the color wheel).
+2. Drawing the main visualization (the color wheel).
 3. Making the filters about the year and genres work.
 4. Displaying the information about the selected song.
 
@@ -113,10 +113,10 @@ Each one of these can be separated into subparts.
 
 For the first one **processing the songs and their colors**, we need to:
 - Choose which colors we want to detect and detect them in song lyrics.
-- For every found color in the lyrics, add a small perturbation in order to make the color wheel more vizually pleasing (in order to avoid big chunks with exactly the same color).
+- For every found color in the lyrics, add a small perturbation in order to make the color wheel more visually pleasing (in order to avoid big chunks with exactly the same color).
 - Order the categories of colors, this is not trivial and we have to choose the most appropriate manner for our project and the desired outcome.
 
-For the second point **drawing the main vizualization (the color wheel)**, there are the following subparts:
+For the second point **drawing the main visualization (the color wheel)**, there are the following subparts:
 - Draw for each song, a small colored tile on the color wheel whith the appropriate color and position (angle).
 - Add a transition when the data is first shown (when the window is loaded).
 - Find a way to handle cases when the number of datapoints is not a multiple of the number of songs we want to draw per circle, in order to maintain the overall circular shape.
@@ -129,7 +129,7 @@ For the last part **displaying the information about the selected song**:
 - When the user clicks on a colored tile, we want to display a panel with detailed information about the song (title, artist, year...).
 - We want to show the part of the lyrics where the color was detected, with the color word being highlighted in the right color and the rest of the lyrics being faded gradually away from the colored word.
 
-Finally, regarding **additional features**, we were thinkin of the following:
+Finally, regarding **additional features**, we were thinking of the following:
 1. Add a Spotify play button to the song information panel to allow the user to listen to the selected music, this requires finding a way of automatic this process as we have roughly a thousand songs.
 2. When a user hovers a song for more than a few seconds, we want to display a small popup bubble above the mouse with just the basic information about the song (title, artist, year).
 3. We want to highlight songs of the same artist if the user clicks on the artist name in the song info panel.
