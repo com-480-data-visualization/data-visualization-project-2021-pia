@@ -71,7 +71,7 @@ Also, we are trying to bring a paper poster to life with much more details and f
 
 Below you can find a sketch of what we want our vizualization to look like and below it there is a screenshot of what we have already achieved:
 
-![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/Sketch.jpg?raw=true)
+![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/Sketch.jpeg?raw=true)
 
 ![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/screenshot.jpg?raw=true)
 
