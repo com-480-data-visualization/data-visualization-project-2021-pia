@@ -35,12 +35,10 @@ whenDocumentLoaded(() => {
 	height = d3.min([wheelDiv.clientHeight - margin.top - margin.bottom,
 		 wheelDiv.clientWidth - margin.left - margin.right]),
 	width = height,
-	numCircles = 4,
-	start = 0
-	end =10
 	centerWheelRadius = 60,
 	songsPerCircle = 45,
 	angleArcPerSong = Math.PI * 2 / songsPerCircle
+	outterRadius = d3.min([width, height]) / 2
 	;
 
 	const svg = d3.select("#wheel-container").append("svg")
@@ -51,11 +49,6 @@ whenDocumentLoaded(() => {
 		.append("g")
 		.attr("transform", "translate(" +( width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")")
 		;
-
-
-
-	var outterRadius = d3.min([width, height]) / 2 ;
-
 
 
 
@@ -82,7 +75,7 @@ whenDocumentLoaded(() => {
 	        .style('stroke', 'black');
 
 				var path = svg.selectAll("path")
-					.data(data)
+				 .data(data)
 				 .enter().append("path")
 				 .attr('class', 'song')
 				 .attr("d", function(d, index) {
