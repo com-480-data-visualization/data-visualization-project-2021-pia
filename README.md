@@ -66,6 +66,83 @@ Also, we are trying to bring a paper poster to life with much more details and f
 
 **10% of the final grade**
 
+### Sketech of the vizulaization
+> Include sketches of the vizualiation you want to make in your final product.
+
+Below you can find a sketch of what we want our vizualization to look like and below it there is a screenshot of what we have already achieved:
+
+![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/sketch.jpg?raw=true)
+
+![sketch](https://github.com/com-480-data-visualization/data-visualization-project-2021-pia/blob/master/screenshot.jpg?raw=true)
+
+
+### Lectures we will need
+> List the tools that you will use for each visualization and which (past or future)
+lectures you will need.
+
+First we need the lecture between week 1 and 4 to be able to code the relevant things for our project, namely we need for the basic stuff:
+- Html, css, js
+- d3
+- Data with d3
+
+To allow the user to interact with the data (hovers, click, filters), we need
+- Interactions with the data from week 5
+
+Since we will be dealing a lot with colrs and how to display them, we will need:
+- the lecture about the perception of colors of week 6
+
+To preprocess the ata we will need:
+- knowledge about Pandas and how to handle text (week 9)
+
+Finally, to make sure our vizualization is useful, beautiful and appealing to the user, we will use the guidelines stated in the lectures of week 7 (Designing vizualizations and Do's and dont's of data vizualization.)
+
+### Goals of the project
+> Break down your goal into independent pieces to implement. Try to design a
+core visualization (minimal viable product) that will be required at the end.
+Then list extra ideas (more creative or challenging) that will enhance the
+visualization but could be dropped without endangering the meaning of the
+project.
+
+There are 4 big parts needed to be completed for our projet:
+1. Processing the songs and their colors,
+2. Drawing the main vizualization (the color wheel),
+3. Making the filters about the year and genres work,
+4. Displaying the information about the selected song.
+
+Each one of these can be separated into smaller subparts.
+
+For the first one **processing the songs and their colors**, we need to:
+- Choose which colors we want to detect and detect them in song lyrics,
+- For every found color in the lyrics , add a small perturbation in order to make the color wheel more vizualy pleasing (in order to avoid big chunks with exactly the same color)
+- Order the categories of colors, this is not trivial and we have to choose the most appropriate manner for our project and the desired outcome.
+
+For the second point **drawing the main vizualization (the color wheel)**, there are the following subparts:
+- Draw for each song, a small colored tile on the color wheel whith the appropriate color and position,
+- Add a transition when the data is first shown (when the window is loaded),
+- Find a way to handle cases when the number of datapoints is not a multiple of the number of songs we want to draw per circle, in order to maintain the overall circular shape.
+
+For the third part **making the filters about the year and genres work**, we need the following:
+- Add buttons to select filter for the genres of songs,
+- Add an x-axis band to select the time range to display.
+
+For the last part **displaying the information about the selected song**, we need to:
+- When the user clicks on a colored tile, we want to display a panel with detailed information about the song (title, artist, year...)
+- We want to show the part of the lyrics where the color was detected, with the color word being highlighted in the right color and the rest of the lyrics being faded gradually away for the colored word.
+
+Finally, regarding **additional features**, we were thinkin of the following:
+1. Add a Spotify play button to the song information pannel to allow the user to listen to the selected music, this requires finding a way of automatic this process as we have roughly a thousand songs,
+2. When a user hovers a song for more that a few seconds, we want to display a small popup bubble above the mouse with just the basic information about the song (title, artist, year)
+3. We want to highligt songs of the same artist if the user clicks on the artist name in the song info pannel,
+4. We want to highlight multiple occurances of the same song (the song included more than one color in its lyrics) when the user clicks on one of the song tiles,
+5. When filters are selected (genre or year range), instead of just hiding some color tiles, we can make the current wheel disappear and a new one with just the filterd data appear,
+6. By clicking on a button, we would like to try to make a bar plot with the same colored tiles and the year as an x axis.
+
+### Functional project prototype review.
+> You should have an initial website running with the basic skeleton of the
+visualization/widgets.
+
+We have already worked on some parts of the project and you can see the results [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/).
+
 
 ## Milestone 3 (4th June, 5pm)
 
