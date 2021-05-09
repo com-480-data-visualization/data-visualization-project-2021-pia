@@ -100,8 +100,10 @@ whenDocumentLoaded(() => {
 					 return 'transparent';
 				 })
 				 .on('mouseover', function(d, i) {
-				   d3.select(this).style('opacity', '0.5');
+				   d3.select(this)
+					 .style('opacity', '0.5');
 				 })
+
 				 .on('mouseout', function(d) {
 					 d3.select(this).style('opacity', '1.0');
 				 })
