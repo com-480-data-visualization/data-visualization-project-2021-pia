@@ -100,41 +100,26 @@ whenDocumentLoaded(() => {
 				 	const song_genre = document.getElementById("song-info-genre");
 				 	const song_position = document.getElementById("song-info-position");
 				 	const song_year = document.getElementById("song-info-year");
-				 	const song_lyrics = document.getElementById("song-info-lyrics");
+				 	const song_lyrics = document.getElementById("lyrics-container");
 					const spotify_player = document.getElementById("spotify-player");
 				 	song_name.innerHTML = d.title;
 				 	song_artist.innerHTML = d.artist;
 				 	song_position.innerHTML = d.pos;
 				 	song_year.innerHTML = d.year;
 					spotify_player.src = "https://open.spotify.com/embed/track/" + d.spotify_uri;
-				 	d.tags = d.tags.replace(/'/g, '"');
-				 	d.tags = JSON.parse(d.tags);
-				 	song_genre.innerHTML = (d.tags.length > 1) ? d.tags[0] +" "+d.tags[1] : d.tags[0];
-				 	lyrics = d.lyrics.split('\n');
-				 	text = "..."
-				 	for (i = 0; i < lyrics.length; i++) {
-				 		if (lyrics[i].includes(d.color)) {
-				 			text += lyrics[i - 1] += "\n";
-				 			text += lyrics[i] += "\n";
-				 			text += lyrics[i + 1] += "\n";
-				 		}
+				 	var tags = d.tags.replace(/'/g, '"');
+				 	var parsed_tags = JSON.parse(tags);
+				 	song_genre.innerHTML = (parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0];
 
-					}
-					song_lyrics.innerHTML = text + "...";
+					song_lyrics.innerHTML = d.preprocessed_lyrics;
 
-					function highlight() {
-  						const words = song_lyrics.textContent.split(" ");
-  						console.log(words);
-  						song_lyrics.innerHTML = "";
-  						words.forEach((word) => {
-    						const span = song_lyrics.appendChild(document.createElement('span'));
-    						span.textContent = word + ' ';
-    						console.log(d.rgb);
-    						if (word === d.color) span.style.color = 'rgb'+d.rgb;
-  						});
-					};
-					song_lyrics.addEventListener("blur", highlight);
-					highlight();
+					var parentPos = d3.select('.colored_word').node().parentNode.getBoundingClientRect(),
+					    childPos = d3.select('.colored_word').node().getBoundingClientRect();
+
+					var offset = childPos.top - parentPos.top;
+					song_lyrics.scroll(0, offset);
+
+
 				 })
 				 .transition()
 				 .duration(30)
