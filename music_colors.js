@@ -1,13 +1,5 @@
 
-/*
-	Run the action when we are sure the DOM has been loaded
-	https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded
-	Example:
-	whenDocumentLoaded(() => {
-		console.log('loaded!');
-		document.getElementById('some-element');
-	});
-*/
+
 function whenDocumentLoaded(action) {
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", action);
@@ -19,7 +11,6 @@ function whenDocumentLoaded(action) {
 
 whenDocumentLoaded(() => {
 	console.log('loaded')
-	// plot object is global, you can inspect it in the dev-console
 	const wheelDiv = document.getElementById("wheel-container");
 
 	const margin = {
@@ -115,9 +106,7 @@ whenDocumentLoaded(() => {
 				 	song_artist.innerHTML = d.artist;
 				 	song_position.innerHTML = d.pos;
 				 	song_year.innerHTML = d.year;
-					// model should be     https://open.spotify.com/embed/track/11FcfHd3SOmmrWJPGe7Y30
-					// uri are in the form:   spotify:track:6hnyQ0YpiO35rutiLLHLmr
-					spotify_player.src = "https://open.spotify.com/embed/track/" + d.spotify_uri.split(":").pop();
+					spotify_player.src = "https://open.spotify.com/embed/track/" + d.spotify_uri;
 				 	d.tags = d.tags.replace(/'/g, '"');
 				 	d.tags = JSON.parse(d.tags);
 				 	song_genre.innerHTML = (d.tags.length > 1) ? d.tags[0] +" "+d.tags[1] : d.tags[0];
