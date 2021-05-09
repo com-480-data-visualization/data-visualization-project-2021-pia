@@ -47,7 +47,7 @@ whenDocumentLoaded(() => {
 		;
 
 
-	d3.csv('small_colors_songs.csv')
+	d3.csv('small_colors_songs_withSpotify.csv')
 	  .then(function(data) {
 
 				var numberCircles = Math.ceil(data.length / songsPerCircle);
@@ -110,10 +110,14 @@ whenDocumentLoaded(() => {
 				 	const song_position = document.getElementById("song-info-position");
 				 	const song_year = document.getElementById("song-info-year");
 				 	const song_lyrics = document.getElementById("song-info-lyrics");
+					const spotify_player = document.getElementById("spotify-player");
 				 	song_name.innerHTML = d.title;
 				 	song_artist.innerHTML = d.artist;
 				 	song_position.innerHTML = d.pos;
 				 	song_year.innerHTML = d.year;
+					// model should be     https://open.spotify.com/embed/track/11FcfHd3SOmmrWJPGe7Y30
+					// uri are in the form:   spotify:track:6hnyQ0YpiO35rutiLLHLmr
+					spotify_player.src = "https://open.spotify.com/embed/track/" + d.spotify_uri.split(":").pop();
 				 	d.tags = d.tags.replace(/'/g, '"');
 				 	d.tags = JSON.parse(d.tags);
 				 	song_genre.innerHTML = (d.tags.length > 1) ? d.tags[0] +" "+d.tags[1] : d.tags[0];
@@ -125,7 +129,7 @@ whenDocumentLoaded(() => {
 				 			text += lyrics[i] += "\n";
 				 			text += lyrics[i + 1] += "\n";
 				 		}
-  						
+
 					}
 					song_lyrics.innerHTML = text + "...";
 
