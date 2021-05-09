@@ -10,12 +10,21 @@
 	<meta name="author" content="Alexander Apostolov, Valentin Garnier and Maina Orchampt-Mareschal">
 
 	<link rel="stylesheet" href="style.css">
+	<link href="nouislider.css" rel="stylesheet">
 </head>
 <body>
-	<div id="wheel-container">
+	<div id="left-panel">
+		<h2>Genre here</h2>
 	</div>
 
-	<div id="right-pane">
+	<div id="center-panel">
+		<div id="wheel-container">
+		</div>
+
+		<div id="year-slider"></div>
+	</div>
+
+	<div id="right-panel">
 		<div id="song-info-container" style="padding: 10px;"> 
 		<center><h2>Song info</h2></center>
 		<p>Name: <em id="song-info-name"></em></p>
@@ -31,6 +40,18 @@
 		</div>
 	</div>
 
+	<script src="nouislider.js"></script>
+	<script>
+		var slider = document.getElementById('year-slider');
+		noUiSlider.create(slider, {
+    		start: [20, 80],
+    		connect: true,
+    		range: {
+        		'min': 0,
+        		'max': 100
+    		}
+		});
+	</script>
 
 	<script src="lib/d3.min.js"></script>
 	<script src="music_colors.js"></script>
