@@ -17,10 +17,6 @@ function whenDocumentLoaded(action) {
 	}
 }
 
-
-
-
-
 whenDocumentLoaded(() => {
 	console.log('loaded')
 	// plot object is global, you can inspect it in the dev-console
@@ -51,26 +47,25 @@ whenDocumentLoaded(() => {
 		;
 
 
-
 	d3.csv('small_colors_songs.csv')
 	  .then(function(data) {
 
 				var numberCircles = Math.ceil(data.length / songsPerCircle);
-				var songsLastCircle = (data.length-1) % songsPerCircle + 1;
+				var songsLastCircle = (data.length - 1) % songsPerCircle + 1;
 				var circleWidth = (outterRadius - centerWheelRadius) / numberCircles;
 				var filledCircleWidth = 0.9 * circleWidth;
-				var spaceBetweenCircles = circleWidth-filledCircleWidth;
+				var spaceBetweenCircles = circleWidth - filledCircleWidth;
 
-				var idxOnAllCircles = songsLastCircle*numberCircles;
-				var offsetAngle = songsLastCircle*angleArcPerSong;
+				var idxOnAllCircles = songsLastCircle * numberCircles;
+				var offsetAngle = songsLastCircle * angleArcPerSong;
 
 				var arcGenerator = d3.arc();
 
 				svg.append("circle")
 					.attr("class", "center-wheel")
-					.attr('cx',0 )
-	        .attr('cy', 0 )
-	        .attr('r',5)
+					.attr('cx', 0)
+	        .attr('cy', 0)
+	        .attr('r', 5)
 					.style('fill', "transparent")
 	        .style('stroke', 'black');
 
@@ -79,15 +74,15 @@ whenDocumentLoaded(() => {
 				 .enter().append("path")
 				 .attr('class', 'song')
 				 .attr("d", function(d, index) {
-					 if (index < idxOnAllCircles){
-						 var startAngle = angleArcPerSong*Math.floor(index/numberCircles);
+					 if (index < idxOnAllCircles) {
+						 var startAngle = angleArcPerSong * Math.floor(index/numberCircles);
 						 var startRadius = centerWheelRadius + spaceBetweenCircles +
-						 	circleWidth * (index%numberCircles);
+						 	circleWidth * (index % numberCircles);
 					 } else {
 						 var offset = index - idxOnAllCircles;
-						 var startAngle = offsetAngle + angleArcPerSong*Math.floor(offset/(numberCircles-1));
+						 var startAngle = offsetAngle + angleArcPerSong * Math.floor(offset/(numberCircles-1));
 						 var startRadius = centerWheelRadius + circleWidth +
-						 	spaceBetweenCircles + circleWidth * (index%(numberCircles-1));
+						 	spaceBetweenCircles + circleWidth * (index % (numberCircles-1));
 					 };
 					 return arcGenerator({
 							startAngle: startAngle,
@@ -106,6 +101,47 @@ whenDocumentLoaded(() => {
 
 				 .on('mouseout', function(d) {
 					 d3.select(this).style('opacity', '1.0');
+				 })
+				 .on('click', function(d) {
+				 	console.log(d);
+				 	const song_name = document.getElementById("song-info-name");
+				 	const song_artist = document.getElementById("song-info-artist");
+				 	const song_genre = document.getElementById("song-info-genre");
+				 	const song_position = document.getElementById("song-info-position");
+				 	const song_year = document.getElementById("song-info-year");
+				 	const song_lyrics = document.getElementById("song-info-lyrics");
+				 	song_name.innerHTML = d.title;
+				 	song_artist.innerHTML = d.artist;
+				 	song_position.innerHTML = d.pos;
+				 	song_year.innerHTML = d.year;
+				 	d.tags = d.tags.replace(/'/g, '"');
+				 	d.tags = JSON.parse(d.tags);
+				 	song_genre.innerHTML = (d.tags.length > 1) ? d.tags[0] +" "+d.tags[1] : d.tags[0];
+				 	lyrics = d.lyrics.split('\n');
+				 	text = "..."
+				 	for (i = 0; i < lyrics.length; i++) {
+				 		if (lyrics[i].includes(d.color)) {
+				 			text += lyrics[i - 1] += "\n";
+				 			text += lyrics[i] += "\n";
+				 			text += lyrics[i + 1] += "\n";
+				 		}
+  						
+					}
+					song_lyrics.innerHTML = text + "...";
+
+					function highlight() {
+  						const words = song_lyrics.textContent.split(" ");
+  						console.log(words);
+  						song_lyrics.innerHTML = "";
+  						words.forEach((word) => {
+    						const span = song_lyrics.appendChild(document.createElement('span'));
+    						span.textContent = word + ' ';
+    						console.log(d.rgb);
+    						if (word === d.color) span.style.color = 'rgb'+d.rgb;
+  						});
+					};
+					song_lyrics.addEventListener("blur", highlight);
+					highlight();
 				 })
 				 .transition()
 				 .duration(30)
