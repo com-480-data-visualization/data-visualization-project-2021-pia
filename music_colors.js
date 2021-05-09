@@ -107,7 +107,7 @@ whenDocumentLoaded(() => {
 				 	song_position.innerHTML = d.pos;
 				 	song_year.innerHTML = d.year;
 					spotify_player.src = "https://open.spotify.com/embed/track/" + d.spotify_uri;
-				 	var tags = d.tags.replace(/'/g, '"');
+				 	var tags = d.tags.replace(/"/g, '').replace(/'/g, '"');
 				 	var parsed_tags = JSON.parse(tags);
 				 	song_genre.innerHTML = (parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0];
 
