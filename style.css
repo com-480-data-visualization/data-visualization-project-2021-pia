@@ -127,15 +127,70 @@ a:hover:after{
 	transition: width .3s ease;
 }
 
+/*close button adapted from https://codepen.io/rsbear/pen/ZpXJVp*/
 
-
-
-
-
-.selected-song {
-	stroke: black;
+.close-container{
+  float: right;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
+.leftright{
+  height: 4px;
+  width: 30px;
+  position: absolute;
+  margin-top: 24px;
+	margin-left: 10px;
+  background-color: black;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  transition: all .3s ease-in;
+}
+
+.rightleft{
+  height: 4px;
+  width: 30px;
+  position: absolute;
+  margin-top: 24px;
+	margin-left: 10px;
+  background-color: black;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  transition: all .3s ease-in;
+}
+
+label{
+  color: #404040;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: .6em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all .3s ease-in;
+  opacity: 0;
+}
+.close{
+  margin: 40px 0 0 3px;
+  position: absolute;
+}
+
+.close-container:hover .leftright{
+  transform: rotate(-45deg);
+  background-color: #404040;
+}
+.close-container:hover .rightleft{
+  transform: rotate(45deg);
+  background-color: #404040;
+}
+.close-container:hover label{
+  opacity: 1;
+}
+
+.selected-song{
+	stroke: black;
+}
 
 /* Scrollbar */
 

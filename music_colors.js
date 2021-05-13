@@ -58,7 +58,8 @@ whenDocumentLoaded(() => {
 		},
 		arcGenerator : d3.arc(),
 		svg : svg,
-		wheelSvg : wheelSvg
+		wheelSvg : wheelSvg,
+		songInfoHTMLCreated : false
 	};
 
 	d3.csv('small_colors_songs_withSpotify.csv')
@@ -68,13 +69,68 @@ whenDocumentLoaded(() => {
 				drawSmallMiddleCircle(globalParameters)
 
 				drawSongTiles(data, globalParameters);
+
+				showGeneralInfo(globalParameters);
 	  })
 	  .catch(function(error){
 			console.log(error);
 	  })
 });
 
-function showSongInformation(song){
+
+function showGeneralInfo(globalParameters){
+	d3.selectAll(".selected-song").attr("class", "song");
+
+	songInfoContainer = d3.select("#song-info-container");
+	songInfoContainer.selectAll("*").remove();
+	globalParameters.songInfoHTMLCreated = false;
+	generalInfoContainer = songInfoContainer.append("div").attr("id", "general-info");
+
+	generalInfoContainer.append("center").append("h2").text("The Color of songs");
+	generalInfoContainer.append("p").text("You are currently seeing a subset of top 100 songs from "+globalParameters.filters.yearLimitLow+" to "+globalParameters.filters.yearLimitHigh+".");
+	generalInfoContainer.append("p").text("A song is shown on this visualization if its lyrics contain a color word.");
+	generalInfoContainer.append("p").text("You can click on a song to get more details about it.");
+	generalInfoContainer.append("p").text("You can also select a custom time range on the time scale at the bottom.");
+	generalInfoContainer.append("p").text("You can toggle the filters on the left to show only some music genres.");
+
+}
+
+function createSongInfoHTML(globalParameters){
+	songInfoContainer = d3.select("#song-info-container");
+	songInfoContainer.selectAll("*").remove();
+
+	closeButton = songInfoContainer.append("div").classed("close-container", true);
+	closeButton.append("div").classed("leftright", true);
+	closeButton.append("div").classed("rightleft", true);
+	closeButton.append("label").classed("close", true).text("close");
+	closeButton.on("click", function(){
+		showGeneralInfo(globalParameters);
+	});
+
+	generalInfoDiv = songInfoContainer.insert("div").attr("id", "general-info-song");
+	lyricsDiv = songInfoContainer.insert("div").attr("id", "song-info-lyrics");
+
+	generalInfoDiv.append("center").append("h2").text("Song info");
+	generalInfoDiv.append("p").text("Name: ").append("em").attr("id", "song-info-name");
+	generalInfoDiv.append("p").text("Artist: ").append("em").attr("id", "song-info-artist");
+	generalInfoDiv.append("p").text("Genre: ").append("em").attr("id", "song-info-genre");
+	generalInfoDiv.append("p").text("Year: ").append("em").attr("id", "song-info-year");
+	generalInfoDiv.append("p").text("Ranking: ").append("em").attr("id", "song-info-position");
+	generalInfoDiv.append("iframe").attr("id", "spotify-player").attr("src", "")
+		.attr("width", "300").attr("height", "80").attr("frameborder", "0")
+		.attr("allowtransparency", "true").attr("allow", "encrypted-media");
+
+	lyricsDiv.append("center").append("h4").text("Lyrics");
+	lyricsDiv.append("div").attr("id", "lyrics-container");
+
+
+}
+
+function showSongInformation(song, globalParameters){
+	if (! globalParameters.songInfoHTMLCreated){
+		createSongInfoHTML(globalParameters);
+		globalParameters.songInfoHTMLCreated = true;
+	}
 	const song_name = document.getElementById("song-info-name");
 	const song_artist = document.getElementById("song-info-artist");
 	const song_genre = document.getElementById("song-info-genre");
@@ -176,12 +232,12 @@ function drawSongTiles(filteredData, globalParameters){
 			 d3.select(this).style('opacity', '1.0');
 		 })
 		 .on('click', function(d) {
-			 showSongInformation(d);
+			 showSongInformation(d, globalParameters);
 			 //uncclass previous selected-song
-			 d3.selectAll(".selected-song").attr("class", "song")
+			 d3.selectAll(".selected-song").attr("class", "song");
 
 			 //add class selected-song to the clicked tile
-			 d3.select(this).classed("selected-song", true)
+			 d3.select(this).classed("selected-song", true);
 		 })
 		 .transition()
 		 .duration(30)
@@ -278,6 +334,7 @@ function createContext(globalParameters, data){
 			globalParameters.filters.yearLimitLow = new_x0;
 			globalParameters.filters.yearLimitHigh = new_x1;
 			reDrawCircle(globalParameters);
+			showGeneralInfo(globalParameters);
 		}
 	}
 }
