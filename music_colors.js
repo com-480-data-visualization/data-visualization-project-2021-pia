@@ -177,7 +177,10 @@ function drawSongTiles(filteredData, globalParameters){
 		 })
 		 .on('click', function(d) {
 			 showSongInformation(d);
+			 //uncclass previous selected-song
 			 d3.selectAll(".selected-song").attr("class", "song")
+
+			 //add class selected-song to the clicked tile
 			 d3.select(this).classed("selected-song", true)
 		 })
 		 .transition()
