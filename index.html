@@ -17,11 +17,7 @@
 		<h2>Genre here</h2>
 	</div>
 
-	<div id="center-panel">
-		<div id="wheel-container">
-		</div>
-
-		<div id="year-slider"></div>
+	<div id="wheel-container">
 	</div>
 
 	<div id="right-panel">
@@ -47,23 +43,14 @@
 		</div>
 
 		<div id="about-us-container">
-			general info about us
+			<p>
+				This is a project for the <a href="https://edu.epfl.ch/coursebook/en/data-visualization-COM-480">Data visualization course</a> thought at <a href="https://www.epfl.ch/en/">EPFL</a> in 2021.
+			</p>
+			<p>
+				Authors : <a href="https://alexander-apostolov.com/">Alexander Apostolov</a>, <a href="https://www.valentingarnier.com/">Valentin Garnier</a> and <a href="https://www.linkedin.com/in/maina-orchampt-mareschal">Maina Orchampt-Mareschal</a>
+			</p>
 		</div>
 	</div>
-
-	<script src="nouislider.js"></script>
-	<script>
-		var slider = document.getElementById('year-slider');
-		noUiSlider.create(slider, {
-    		start: [20, 80],
-    		connect: true,
-    		range: {
-        		'min': 0,
-        		'max': 100
-    		}
-		});
-	</script>
-
 	<script src="lib/d3.min.js"></script>
 	<script src="music_colors.js"></script>
 </body>

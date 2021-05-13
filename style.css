@@ -46,7 +46,16 @@ body {
 	font-size: 1.1rem;
 }
 
-/* TODO:  remove border-style */
+#left-panel {
+	width: 15%;
+	height:100%;
+}
+
+#wheel-container {
+		width: 55%;
+    height: 100%;
+    text-align: center;
+}
 
 #right-panel {
   width: 30%;
@@ -85,28 +94,46 @@ body {
   height: 10%;
   border-top: double;
   padding: 10px;
+
+	font-size: 0.7rem;
 }
 
-#center-panel {
-    width: 55%;
-    height: 100%;
-	justify-content: center;
+a{
+	text-decoration: none;
+	color: #404040;
+	padding-bottom: 3px;
+	position: relative;
 }
 
-#left-panel {
-	width: 15%;
-	height:100%;
+a:after{
+	content: '';
+	position: absolute;
+	bottom: 0;
+	right: 0;
+
+	width: 0%;
+	height: 100%;
+
+	border-bottom: 2px solid white;
+
+	transition: width 0.3s ease;
 }
 
-#wheel-container {
-    height: 90%;
-    text-align: center;
+a:hover:after{
+	left: 0;
+	width: 100%;
+	transition: width .3s ease;
 }
 
-#year-slider {
-  width: 80%; /* Width of the outside container */
-  justify-content: center;
+
+
+
+
+
+.selected-song {
+	stroke: black;
 }
+
 
 /* Scrollbar */
 
