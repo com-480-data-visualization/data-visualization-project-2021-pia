@@ -130,7 +130,6 @@ function createSongInfoHTML(globalParameters){
 function showSongInformation(song, globalParameters){
 	if (! globalParameters.songInfoHTMLCreated){
 		createSongInfoHTML(globalParameters);
-		globalParameters.songInfoHTMLCreated = true;
 	}
 	const song_name = document.getElementById("song-info-name");
 	const song_artist = document.getElementById("song-info-artist");
@@ -143,7 +142,18 @@ function showSongInformation(song, globalParameters){
 	song_artist.innerHTML = song.artist;
 	song_position.innerHTML = song.pos;
 	song_year.innerHTML = song.year;
-	spotify_player.src = "https://open.spotify.com/embed/track/" + song.spotify_uri;
+	//updating the Spotify play button only if there is no other one yet or if there is one it is another song
+	//(so that music is not interrupted if user clicked on same song)
+	if (! globalParameters.songInfoHTMLCreated){
+		spotify_player.src = "https://open.spotify.com/embed/track/" + song.spotify_uri;
+	} else {
+		currentlyShownMusic = d3.select(".selected-song").attr("spotify_uri");
+		if(currentlyShownMusic !== song.spotify_uri){
+			spotify_player.src = "https://open.spotify.com/embed/track/" + song.spotify_uri;
+		}
+	}
+
+
 	var tags = song.tags.replace(/"/g, '').replace(/'/g, '"');
 	var parsed_tags = JSON.parse(tags);
 	song_genre.innerHTML = (parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0];
@@ -152,6 +162,7 @@ function showSongInformation(song, globalParameters){
 
 	var offset = getOffsetOfFirstColoredWord();
 	song_lyrics.scroll(0, offset);
+	globalParameters.songInfoHTMLCreated = true;
 }
 
 function getOffsetOfFirstColoredWord(){
