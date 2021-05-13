@@ -79,7 +79,8 @@ whenDocumentLoaded(() => {
 
 
 function showGeneralInfo(globalParameters){
-	d3.selectAll(".selected-song").attr("class", "song");
+	//removing all other classes to songs (seleceted-song, unslected-song ....)
+	d3.selectAll(".song").attr("class", "song");
 
 	songInfoContainer = d3.select("#song-info-container");
 	songInfoContainer.selectAll("*").remove();
@@ -221,22 +222,27 @@ function drawSongTiles(filteredData, globalParameters){
 					outerRadius: startRadius + filledCircleWidth
 				});
 		 })
+		 .attr("spotify_uri", function(d){
+			 return d.spotify_uri;
+		 })
 		 .style("fill", function(d, i) {
 			 return 'transparent';
 		 })
 		 .on('mouseover', function(d, i) {
-			 d3.select(this)
-			 .style('opacity', '0.5');
+			 d3.select(this).classed('hovered-song', true);
 		 })
 		 .on('mouseout', function(d) {
-			 d3.select(this).style('opacity', '1.0');
+			 d3.select(this).classed('hovered-song', false);
 		 })
 		 .on('click', function(d) {
 			 showSongInformation(d, globalParameters);
-			 //uncclass previous selected-song
-			 d3.selectAll(".selected-song").attr("class", "song");
+			 //uncclass previous selected-song, unselected-song etc...
+			 d3.selectAll(".song").attr("class", "song");
 
 			 //add class selected-song to the clicked tile
+			 current_song_id = d.spotify_uri;
+
+			 d3.selectAll(".song").classed("unselected-song", function(d) { return d.spotify_uri !== current_song_id; })
 			 d3.select(this).classed("selected-song", true);
 		 })
 		 .transition()

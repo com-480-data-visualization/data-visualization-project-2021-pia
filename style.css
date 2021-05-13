@@ -188,8 +188,16 @@ label{
   opacity: 1;
 }
 
+.hovered-song{
+	opacity : 0.5;
+}
+
 .selected-song{
 	stroke: black;
+}
+
+.unselected-song{
+	opacity: 0.1;
 }
 
 /* Scrollbar */
