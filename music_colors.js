@@ -21,19 +21,19 @@ whenDocumentLoaded(() => {
 			bottom: wheelDiv.clientHeight*0.15,
 			left: defaultMargin
 		},
-		height = d3.min([wheelDiv.clientHeight - margin.top - margin.bottom,
-			 wheelDiv.clientWidth - margin.left - margin.right]),
-		width = height,
-		songsPerCircle = 45,
-		svg = d3.select("#wheel-container").append("svg")
-			.attr("width", (width + margin.left + margin.right))
-			.attr("height", (height + margin.top + margin.bottom))
-			.append("g")
-			.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")"),
-		wheelSvg = svg.append("g")
-					.attr("transform", "rotate(" + 0 +")")
-					.attr("id", "wheelSvg")
-					.attr("currentRotation" , 0);
+	height = d3.min([wheelDiv.clientHeight - margin.top - margin.bottom,
+		 wheelDiv.clientWidth - margin.left - margin.right]),
+	width = height,
+	songsPerCircle = 45,
+	svg = d3.select("#wheel-container").append("svg")
+		.attr("width", (width + margin.left + margin.right))
+		.attr("height", (height + margin.top + margin.bottom))
+		.append("g")
+		.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")"),
+	wheelSvg = svg.append("g")
+				.attr("transform", "rotate(" + 0 +")")
+				.attr("id", "wheelSvg")
+				.attr("currentRotation" , 0);
 
 	//2. Store them in a dict
 	var globalParameters = {
