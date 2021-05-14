@@ -146,6 +146,7 @@ function showSongInformation(song, globalParameters){
 	if (globalParameters.artistClicked){
 		if(!(d3.select(".selected-song").attr("artist") === song.artist)){
 			globalParameters.artistClicked = false;
+			d3.selectAll(".song").classed("same-artist", false);
 		} else {
 			var currentlySelectedArtist = song.artist;
 			d3.selectAll(".song").classed("same-artist", function(d){
