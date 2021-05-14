@@ -209,31 +209,35 @@ label{
 }
 
 /*adapted from https://codepen.io/samvdh/pen/MmZzyR*/
+
 #song-info-artist{
 	color: #404040;
 	position: relative;
-	padding: 10px;
+	padding-bottom: 10px;
 
 }
 
-#song-info-artist:before{
+#song-info-artist:after{
 	content: '';
 	position: absolute;
-	width: 0px;
-	transition: all 0.3s ease;
+	bottom: 0;
+	right: 0;
 
-	left: 10%;
-	bottom: 15%;
+	width: 0%;
+	height: 100%;
 	border-bottom: 2px solid #404040;
-}
-#song-info-artist:hover:before{
-	width: 80%;
 	transition: all 0.3s ease;
 }
-#song-info-artist.clicked-artist:before{
+#song-info-artist:hover:after{
+	left: 0;
+	width: 100%;
+	transition: all .3s ease;
+}
+#song-info-artist.clicked-artist:after{
 	border-color: white;
-	width: 80%;
-	transition: all 0.3s ease;
+	left: 0;
+	width: 100%;
+	transition: all .3s ease;
 }
 
 #song-info-artist.clicked-artist{
