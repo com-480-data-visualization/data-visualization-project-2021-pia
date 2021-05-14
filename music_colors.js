@@ -28,7 +28,6 @@ whenDocumentLoaded(() => {
 		svg = d3.select("#wheel-container").append("svg")
 			.attr("width", (width + margin.left + margin.right))
 			.attr("height", (height + margin.top + margin.bottom))
-			//.style("background-color", "pink")
 			.append("g")
 			.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")"),
 		wheelSvg = svg.append("g")
