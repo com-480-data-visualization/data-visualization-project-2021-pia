@@ -59,7 +59,8 @@ whenDocumentLoaded(() => {
 		arcGenerator : d3.arc(),
 		svg : svg,
 		wheelSvg : wheelSvg,
-		songInfoHTMLCreated : false
+		songInfoHTMLCreated : false,
+		artistClicked : false,
 	};
 
 	d3.csv('small_colors_songs_withSpotify.csv')
@@ -123,6 +124,7 @@ function createSongInfoHTML(globalParameters){
 
 	lyricsDiv.append("center").append("h4").text("Lyrics");
 	lyricsDiv.append("div").attr("id", "lyrics-container");
+	globalParameters.artistClicked = false;
 
 
 }
@@ -140,6 +142,44 @@ function showSongInformation(song, globalParameters){
 	const spotify_player = document.getElementById("spotify-player");
 	song_name.innerHTML = song.title;
 	song_artist.innerHTML = song.artist;
+
+	if (globalParameters.artistClicked){
+		if(!(d3.select(".selected-song").attr("artist") === song.artist)){
+			globalParameters.artistClicked = false;
+		} else {
+			var currentlySelectedArtist = song.artist;
+			d3.selectAll(".song").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
+		}
+	}
+
+	d3.select("#song-info-artist")
+	.on("click", function(){
+		globalParameters.artistClicked = !globalParameters.artistClicked;
+		if (globalParameters.artistClicked){
+			var currentlySelectedArtist = song.artist;
+			d3.selectAll(".song").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
+		}
+		d3.select(this).classed("clicked-artist", globalParameters.artistClicked);
+	})
+	.on("mouseover", function(){
+		if (!globalParameters.artistClicked){
+			var currentlySelectedArtist = song.artist;
+			d3.selectAll(".song").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
+		}
+	})
+	.on("mouseout", function(){
+		if (!globalParameters.artistClicked){
+			d3.selectAll(".song").classed("same-artist", false);
+		}
+	})
+	.classed("clicked-artist", globalParameters.artistClicked);
+
 	song_position.innerHTML = song.pos;
 	song_year.innerHTML = song.year;
 	//updating the Spotify play button only if there is no other one yet or if there is one it is another song
@@ -236,6 +276,9 @@ function drawSongTiles(filteredData, globalParameters){
 		 .attr("spotify_uri", function(d){
 			 return d.spotify_uri;
 		 })
+		 .attr("artist", function(d){
+			 return d.artist;
+		 })
 		 .style("fill", function(d, i) {
 			 return 'transparent';
 		 })
@@ -248,11 +291,10 @@ function drawSongTiles(filteredData, globalParameters){
 		 .on('click', function(d) {
 			 showSongInformation(d, globalParameters);
 			 //uncclass previous selected-song, unselected-song etc...
-			 d3.selectAll(".song").attr("class", "song");
+			 d3.selectAll(".song").classed("selected-song", false).attr("unselected-song", false);
 
 			 //add class selected-song to the clicked tile
 			 current_song_id = d.spotify_uri;
-
 			 d3.selectAll(".song").classed("unselected-song", function(d) { return d.spotify_uri !== current_song_id; })
 			 d3.select(this).classed("selected-song", true);
 		 })

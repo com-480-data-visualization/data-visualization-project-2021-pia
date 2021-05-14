@@ -200,9 +200,48 @@ label{
 	opacity: 0.3;
 }
 
+.same-artist{
+	opacity: 1;
+}
+
 .hovered-song.unselected-song{
 	opacity : 0.5;
 }
+
+/*adapted from https://codepen.io/samvdh/pen/MmZzyR*/
+#song-info-artist{
+	color: #404040;
+	position: relative;
+	padding: 10px;
+
+}
+
+#song-info-artist:before{
+	content: '';
+	position: absolute;
+	width: 0px;
+	transition: all 0.3s ease;
+
+	left: 10%;
+	bottom: 15%;
+	border-bottom: 2px solid #404040;
+}
+#song-info-artist:hover:before{
+	width: 80%;
+	transition: all 0.3s ease;
+}
+#song-info-artist.clicked-artist:before{
+	border-color: white;
+	width: 80%;
+	transition: all 0.3s ease;
+}
+
+#song-info-artist.clicked-artist{
+	color: white;
+}
+
+
+
 
 /* Scrollbar */
 
