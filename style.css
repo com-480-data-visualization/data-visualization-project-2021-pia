@@ -24,6 +24,8 @@ html, body, figure {
 	padding: 0;
 	margin: 0;
 	border: 0;
+	font-family: Arial;
+	color:black;
 }
 
 /* Default font and size */
@@ -39,33 +41,108 @@ body {
 	align-content: center;
 
 	/* background behind the plot */
-	background: rgb(145,127,112);
-
-	/* default text */
-	font-family: sans-serif;
-	font-size: 1.1rem;
+	background: #dac9aa;
 }
 
 #left-panel {
 	width: 15%;
 	height:100%;
+	padding:10px;
+	justify-content: center;
+	align-content: center;
 }
 
+.button_histo {
+  display: inline-block;
+  line-height: 3em;
+  padding: 0.4em;
+  background: #34343E;
+  border-radius: 0.5em;
+  background-clip: padding-box;
+  color:white;
+  position: absolute;
+  bottom:0;
+  margin-left: 20px;
+  margin-bottom: 20px;
+
+  margin-right: 1em;
+}
+
+.button--plain {
+	background: #41414E
+}
+
+#btn {
+  background: #222;
+  height: 50px;
+  width: 15%;
+  min-width: 150px;
+  border: none;
+  border-radius: 10px;
+  color: #eee;
+  font-size: 20px;
+  position: relative;
+  transition: 1s;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-itemscenter;
+  justify-content: center;
+  cursor: pointer;
+  padding-top: 5px;
+}
+
+#btn #circle {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  overflow: hidden;
+  transition: 500ms;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+#btn:hover {
+  background: transparent;
+}
+
+#btn:hover #circle {
+  height: 50px;
+  width: 150px;
+  left: 0;
+  border-radius: 0;
+  border-bottom: 2px solid #eee;
+}
+
+
 #wheel-container {
-		width: 55%;
+	width: 55%;
     height: 100%;
     text-align: center;
+    box-shadow: 0.5px 0px 5px 1px black;
+    background: rgb(0,0,0);
+	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(218,201,170,1) 59%);
 }
 
 #right-panel {
   width: 30%;
   height: 100%;
-	border-left: double;
 }
 
 #song-info-container {
     width: 100%;
     height: 90%;
+    padding: 10px;
 }
 
 #general-info-song {
@@ -92,7 +169,6 @@ body {
 #about-us-container {
   width: 100%;
   height: 10%;
-  border-top: double;
   padding: 10px;
 
 	font-size: 0.7rem;

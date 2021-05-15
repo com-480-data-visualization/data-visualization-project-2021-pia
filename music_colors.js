@@ -1,5 +1,3 @@
-
-
 function whenDocumentLoaded(action) {
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", action);
@@ -7,7 +5,6 @@ function whenDocumentLoaded(action) {
 		action();
 	}
 }
-
 
 whenDocumentLoaded(() => {
 	const wheelDiv = document.getElementById("wheel-container");
@@ -87,7 +84,7 @@ function showGeneralInfo(globalParameters){
 	globalParameters.songInfoHTMLCreated = false;
 	generalInfoContainer = songInfoContainer.append("div").attr("id", "general-info");
 
-	generalInfoContainer.append("center").append("h2").text("The Color of songs");
+	generalInfoContainer.append("center").append("h2").text("The Color of Songs");
 	generalInfoContainer.append("p").text("You are currently seeing a subset of top 100 songs from "+globalParameters.filters.yearLimitLow+" to "+globalParameters.filters.yearLimitHigh+".");
 	generalInfoContainer.append("p").text("A song is shown on this visualization if its lyrics contain a color word.");
 	generalInfoContainer.append("p").text("You can click on a song to get more details about it.");
@@ -96,7 +93,7 @@ function showGeneralInfo(globalParameters){
 
 }
 
-function createSongInfoHTML(globalParameters){
+function createSongInfoHTML(song, globalParameters){
 	songInfoContainer = d3.select("#song-info-container");
 	songInfoContainer.selectAll("*").remove();
 
@@ -111,8 +108,8 @@ function createSongInfoHTML(globalParameters){
 	generalInfoDiv = songInfoContainer.insert("div").attr("id", "general-info-song");
 	lyricsDiv = songInfoContainer.insert("div").attr("id", "song-info-lyrics");
 
-	generalInfoDiv.append("center").append("h2").text("Song info");
-	generalInfoDiv.append("p").text("Name: ").append("em").attr("id", "song-info-name");
+	//generalInfoDiv.append("center").append("h2").text("Song info");
+	generalInfoDiv.append("center").append("h2").attr("id", "song-info-name");
 	generalInfoDiv.append("p").text("Artist: ").append("em").attr("id", "song-info-artist");
 	generalInfoDiv.append("p").text("Genre: ").append("em").attr("id", "song-info-genre");
 	generalInfoDiv.append("p").text("Year: ").append("em").attr("id", "song-info-year");
@@ -125,12 +122,11 @@ function createSongInfoHTML(globalParameters){
 	lyricsDiv.append("div").attr("id", "lyrics-container");
 	globalParameters.artistClicked = false;
 
-
 }
 
 function showSongInformation(song, globalParameters){
-	if (! globalParameters.songInfoHTMLCreated){
-		createSongInfoHTML(globalParameters);
+	if (!globalParameters.songInfoHTMLCreated){
+		createSongInfoHTML(song, globalParameters);
 	}
 	const song_name = document.getElementById("song-info-name");
 	const song_artist = document.getElementById("song-info-artist");
