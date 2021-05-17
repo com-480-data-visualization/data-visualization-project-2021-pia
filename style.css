@@ -69,7 +69,7 @@ body {
 }
 
 .button--plain {
-	background: #41414E
+	background: #41414E;
 }
 
 #btn {
@@ -89,6 +89,7 @@ body {
   justify-content: center;
   cursor: pointer;
   padding-top: 5px;
+  margin-bottom: 10px;
 }
 
 #btn #circle {
@@ -131,7 +132,7 @@ body {
     text-align: center;
     box-shadow: 0.5px 0px 5px 1px black;
     background: rgb(0,0,0);
-	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(218,201,170,1) 59%);
+	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(218,201,170,1) 29%);
 }
 
 #right-panel {
@@ -147,7 +148,7 @@ body {
 
 #general-info-song {
 	width: 100%;
-	height: 55%;
+	height: 40%;
 }
 
 #spotify-player{
@@ -156,7 +157,7 @@ body {
 }
 
 #song-info-lyrics {
-	height: 30%;
+	height: 50%;
 	float: bottom;
 
 }
@@ -276,12 +277,17 @@ label{
 	opacity: 0.2;
 }
 
+
 .same-artist{
 	opacity: 1;
 }
 
 .hovered-song.unselected-song{
 	opacity : 0.5;
+}
+
+.unhighlight-genre {
+	opacity: 0.2;
 }
 
 /*adapted from https://codepen.io/samvdh/pen/MmZzyR*/

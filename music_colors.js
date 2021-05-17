@@ -61,19 +61,73 @@ whenDocumentLoaded(() => {
 
 	d3.csv('small_colors_songs_withSpotify.csv')
 	  .then(function(data) {
-				createContext(globalParameters, data)
+				createContext(globalParameters, data);
 
-				drawSmallMiddleCircle(globalParameters)
+				drawSmallMiddleCircle(globalParameters);
 
 				drawSongTiles(data, globalParameters);
 
 				showGeneralInfo(globalParameters);
+
+				drawGenresButtons(data, globalParameters);
 	  })
 	  .catch(function(error){
 			console.log(error);
 	  })
 });
 
+function drawGenresButtons(filteredData, globalParameters) {
+	var allGenre = filteredData.map(function(d) {
+  		return {
+    		genre: d.general_genre,
+  		}
+	});
+	var counts = {};
+	for(var i = 0; i < allGenre.length; i++) {
+		var word = allGenre[i].genre;
+		if (word === "") {
+			continue;
+		}
+		if(counts[word] === undefined) {
+			counts[word] = 1;
+		}
+		else {
+			counts[word] += 1;
+		}
+	}
+
+	var items = Object.keys(counts).map(function(key) {
+  		return [key, counts[key]];
+	});
+	items.sort(function(first, second) {
+  		return second[1] - first[1];
+	});
+	items = items.map(function(d) {
+		return d[0];
+	});
+	var mostFrequentGenre = items.slice(0, 5);
+	console.log(mostFrequentGenre);
+
+	d3.select("#left-panel")
+		.selectAll("input")
+		.remove();
+
+	d3.select("#left-panel")
+		.selectAll("input")
+		.data(mostFrequentGenre)
+		.enter()
+		.append("input")
+		.attr("type","button")
+		.attr("id","btn")
+		.attr("value", function (d) {
+			return d;
+		}).on('click', function(d) {
+			showGeneralInfo(globalParameters);
+			 d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
+			 	return d2.general_genre !== d;
+			 })
+		 })
+}
 
 function showGeneralInfo(globalParameters){
 	//removing all other classes to songs (seleceted-song, unslected-song ....)
@@ -229,7 +283,8 @@ function reDrawCircle(globalParameters){
 
 	d3.csv('small_colors_songs_withSpotify.csv')
 		.then(function(data) {
-				var filteredData = filterData(data, globalParameters)
+				var filteredData = filterData(data, globalParameters);
+				drawGenresButtons(filteredData, globalParameters);
 				drawSongTiles(filteredData, globalParameters);
 			 }).catch(function(error){
 				console.log(error);
@@ -274,6 +329,9 @@ function drawSongTiles(filteredData, globalParameters){
 		 })
 		 .attr("artist", function(d){
 			 return d.artist;
+		 })
+		 .attr("genre", function(d) {
+		 	return d.general_genre;
 		 })
 		 .style("fill", function(d, i) {
 			 return 'transparent';
