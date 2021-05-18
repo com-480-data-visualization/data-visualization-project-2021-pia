@@ -11,22 +11,22 @@ whenDocumentLoaded(() => {
 
 	//global parameters
 	//1. prepare the global parameters
-	var defaultMargin = wheelDiv.clientWidth*0.02,
+	var defaultMargin = wheelDiv.clientWidth*0.02;
 	margin = {
 			top: defaultMargin,
 			right: defaultMargin,
 			bottom: wheelDiv.clientHeight*0.15,
 			left: defaultMargin
-		},
+		};
 	height = d3.min([wheelDiv.clientHeight - margin.top - margin.bottom,
 		 wheelDiv.clientWidth - margin.left - margin.right]),
-	width = height,
-	songsPerCircle = 45,
+	width = height;
+	songsPerCircle = 45;
 	svg = d3.select("#wheel-container").append("svg")
 		.attr("width", (width + margin.left + margin.right))
 		.attr("height", (height + margin.top + margin.bottom))
 		.append("g")
-		.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")"),
+		.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")");
 	wheelSvg = svg.append("g")
 				.attr("transform", "rotate(" + 0 +")")
 				.attr("id", "wheelSvg")
@@ -74,6 +74,7 @@ whenDocumentLoaded(() => {
 	  .catch(function(error){
 			console.log(error);
 	  })
+
 });
 
 function drawGenresButtons(filteredData, globalParameters) {
@@ -106,27 +107,89 @@ function drawGenresButtons(filteredData, globalParameters) {
 		return d[0];
 	});
 	var mostFrequentGenre = items.slice(0, 5);
-	console.log(mostFrequentGenre);
 
 	d3.select("#left-panel")
 		.selectAll("input")
 		.remove();
 
+
+	var printedGenre = ""; //Le toggle pour le boutton
+	//Simplement on va regarder si le genre clické est le meme, si c'est le meme ca veut dire qu'on doit
+	//tout remettre a 0 quand on reclick dessus.
+	//Y'avais un pb quand on selectionnais une musique et qu'ensuite on cliquait sur un genre, c'est réglé
+	//en placant bien showGeneralInfo ou il faut
+	
 	d3.select("#left-panel")
 		.selectAll("input")
 		.data(mostFrequentGenre)
 		.enter()
 		.append("input")
-		.attr("type","button")
-		.attr("id","btn")
+		.attr("type", "button")
+		.attr("id", "btn")
 		.attr("value", function (d) {
 			return d;
 		}).on('click', function(d) {
 			showGeneralInfo(globalParameters);
+			if(printedGenre == d) { // This means here that we want to turn off the current genre selected.
+				showGeneralInfo(globalParameters);
+				printedGenre = "";
+				return;
+			}
+			else {
 			 d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
+			 	printedGenre = d;
 			 	return d2.general_genre !== d;
-			 })
+			 })	
+			}	 
 		 })
+	// Boutton pour l'histograme en d3 plutot que en html
+
+	var currentPlot = "vynil"; //pareil que l'histoire du toggle dans les genres
+
+	d3.select("#left-panel")
+		.append("input")
+		.attr("type", "button")
+		.attr("value", "Histogram")
+		.classed("button_histo", true)
+		.classed("button_plain", true)
+		.on('click', function(d) {
+			// Ici Histograme. A voir comment modulariser, peut etre que c'est mieux de faire un fichier different ?
+			d3.select(this).attr("value", "Vynil");
+			d3.select("#wheelSvg")
+				.transition()
+				.duration(1000)
+				.style("opacity", 0)
+				.remove();
+			document.getElementById("wheel-container").style["background"] = "#e0d0c4"; // plus de sens d'avoir un dégradé radial
+			drawHistogram(filteredData, globalParameters);
+		})
+		
+}
+
+function drawHistogram(filteredData, globalParameters){
+	d3.select("#wheel-container").selectAll("wheelSvg").remove();
+	svg = d3.select("#wheel-container").select("svg");
+	svg.attr('transform', null);	
+	histoSvg = svg.append("g").attr("id", "histoSvg");
+	histoSvg.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")");
+
+	histoSvg.append('rect').attr('width', globalParameters.width).attr('height', globalParameters.height);
+
+	//Construct the histogram
+	var x = d3.scaleLinear()
+		.domain([globalParameters.filters.yearLimitLow, globalParameters.filters.yearLimitHigh])
+		.range(0, globalParameters.width);
+
+	var y = d3.scaleLinear()
+		.domain([0, 1000])
+		.range(0, 200); // A definir ici avec la data le maximum count
+
+	drawHistogramTiles(filteredData, globalParameters)
+
+}
+
+function drawHistogramTiles(filteredData, globalParameters){
+	console.log("Draw tiles now!")
 }
 
 function showGeneralInfo(globalParameters){
@@ -145,6 +208,8 @@ function showGeneralInfo(globalParameters){
 	generalInfoContainer.append("p").text("You can also select a custom time range on the time scale at the bottom.");
 	generalInfoContainer.append("p").text("You can toggle the filters on the left to show only some music genres.");
 
+	generalInfoContainer.append("p").text("This is a project for the Data visualization course thought at EPFL in 2021.");
+	generalInfoContainer.append("p").text("Authors : Alexander Apostolov, Valentin Garnier and Maina Orchampt-Mareschal");
 }
 
 function createSongInfoHTML(song, globalParameters){
@@ -175,7 +240,6 @@ function createSongInfoHTML(song, globalParameters){
 	lyricsDiv.append("center").append("h3").text("Lyrics");
 	lyricsDiv.append("div").attr("id", "lyrics-container").style({'font-family': "palatino"});
 	globalParameters.artistClicked = false;
-
 }
 
 function showSongInformation(song, globalParameters){
@@ -190,7 +254,6 @@ function showSongInformation(song, globalParameters){
 	const song_lyrics = document.getElementById("lyrics-container");
 	const spotify_player = document.getElementById("spotify-player");
 	song_name.innerHTML = song.title;
-	song_name.style.fontFamily = "Palatino";
 	song_artist.innerHTML = song.artist;
 
 	if (globalParameters.artistClicked){
@@ -348,6 +411,7 @@ function drawSongTiles(filteredData, globalParameters){
 			 showSongInformation(d, globalParameters);
 			 //uncclass previous selected-song, unselected-song etc...
 			 d3.selectAll(".song").classed("selected-song", false).attr("unselected-song", false);
+			 d3.selectAll(".song").classed("unhighlight-genre", false);
 
 			 //add class selected-song to the clicked tile
 			 current_song_id = d.spotify_uri;
