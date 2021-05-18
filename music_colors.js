@@ -157,7 +157,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 			d3.select(this).attr("value", "Vynil");
 			d3.select("#wheelSvg")
 				.transition()
-				.duration(1000)
+				.duration(300)
 				.style("opacity", 0)
 				.remove();
 			document.getElementById("wheel-container").style["background"] = "#e0d0c4"; // plus de sens d'avoir un dégradé radial
@@ -173,7 +173,11 @@ function drawHistogram(filteredData, globalParameters){
 	histoSvg = svg.append("g").attr("id", "histoSvg");
 	histoSvg.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")");
 
-	histoSvg.append('rect').attr('width', globalParameters.width).attr('height', globalParameters.height);
+	histoSvg.append('rect')
+		.attr('width', globalParameters.width)
+		.attr('height', globalParameters.height)
+		.style("fill", "none")
+		.style("stroke", "black");
 
 	//Construct the histogram
 	var x = d3.scaleLinear()
