@@ -172,8 +172,8 @@ function createSongInfoHTML(song, globalParameters){
 		.attr("width", "300").attr("height", "80").attr("frameborder", "0")
 		.attr("allowtransparency", "true").attr("allow", "encrypted-media");
 
-	lyricsDiv.append("center").append("h4").text("Lyrics");
-	lyricsDiv.append("div").attr("id", "lyrics-container");
+	lyricsDiv.append("center").append("h3").text("Lyrics");
+	lyricsDiv.append("div").attr("id", "lyrics-container").style({'font-family': "palatino"});
 	globalParameters.artistClicked = false;
 
 }
@@ -190,6 +190,7 @@ function showSongInformation(song, globalParameters){
 	const song_lyrics = document.getElementById("lyrics-container");
 	const spotify_player = document.getElementById("spotify-player");
 	song_name.innerHTML = song.title;
+	song_name.style.fontFamily = "Palatino";
 	song_artist.innerHTML = song.artist;
 
 	if (globalParameters.artistClicked){
@@ -249,6 +250,7 @@ function showSongInformation(song, globalParameters){
 	song_genre.innerHTML = (parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0];
 
 	song_lyrics.innerHTML = song.preprocessed_lyrics;
+	song_lyrics.style.fontFamily = "Palatino";
 
 	var offset = getOffsetOfFirstColoredWord();
 	song_lyrics.scroll(0, offset);

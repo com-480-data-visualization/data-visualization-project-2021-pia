@@ -24,8 +24,8 @@ html, body, figure {
 	padding: 0;
 	margin: 0;
 	border: 0;
-	font-family: Arial;
-	color:black;
+	font-family: Helvetica;
+	color:#222f38;
 }
 
 /* Default font and size */
@@ -41,7 +41,7 @@ body {
 	align-content: center;
 
 	/* background behind the plot */
-	background: #dac9aa;
+	background: #e0d0c4;
 }
 
 #left-panel {
@@ -50,42 +50,38 @@ body {
 	padding:10px;
 	justify-content: center;
 	align-content: center;
+	text-align: center;
+	background-color: #bda493;
 }
 
 .button_histo {
-  display: inline-block;
-  line-height: 3em;
+  width: 10%;
   padding: 0.4em;
   background: #34343E;
   border-radius: 0.5em;
   background-clip: padding-box;
-  color:white;
-  position: absolute;
-  bottom:0;
-  margin-left: 20px;
+  color: white;
   margin-bottom: 20px;
-
-  margin-right: 1em;
+  position: absolute;
+  bottom: 0;
 }
 
 .button--plain {
-	background: #41414E;
+	background: #222f38;
 }
 
 #btn {
-  background: #222;
+  background: #222f38;
   height: 50px;
   width: 15%;
   min-width: 150px;
   border: none;
   border-radius: 10px;
   color: #eee;
-  font-size: 20px;
-  position: relative;
+  font-size: 16px;
   transition: 1s;
   -webkit-tap-highlight-color: transparent;
-  display: flex;
-  align-itemscenter;
+  align-items: center;
   justify-content: center;
   cursor: pointer;
   padding-top: 5px;
@@ -130,9 +126,9 @@ body {
 	width: 55%;
     height: 100%;
     text-align: center;
-    box-shadow: 0.5px 0px 5px 1px black;
-    background: rgb(0,0,0);
-	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(218,201,170,1) 29%);
+    box-shadow: -8px 0px 10px -5px #243137;
+	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,208,196,1) 20%);
+	background-position: 0px -50px;
 }
 
 #right-panel {
@@ -171,8 +167,8 @@ body {
   width: 100%;
   height: 10%;
   padding: 10px;
-
-	font-size: 0.7rem;
+  font-size: 0.7rem;
+  border-top: 1px solid black;
 }
 
 /*link style taken from https://codepen.io/samvdh/pen/MmZzyR*/
@@ -241,7 +237,7 @@ a:hover:after{
 
 label{
   color: #404040;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Helvetica, sans-serif;
   font-size: .6em;
   text-transform: uppercase;
   letter-spacing: 2px;
