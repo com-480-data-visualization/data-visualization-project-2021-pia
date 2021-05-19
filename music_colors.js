@@ -139,6 +139,10 @@ function drawGenresButtons(filteredData, globalParameters) {
 			 d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
 			 	printedGenre = d;
 			 	return d2.general_genre !== d;
+			 })
+			 d3.selectAll("rect").classed("unhighlight-genre", function(d2) {
+			 	printedGenre = d;
+			 	return d2.general_genre !== d;
 			 })	
 			}	 
 		 })
@@ -153,23 +157,28 @@ function drawGenresButtons(filteredData, globalParameters) {
 		.classed("button_histo", true)
 		.classed("button_plain", true)
 		.on('click', function(d) {
-			// Ici Histograme. A voir comment modulariser, peut etre que c'est mieux de faire un fichier different ?
-			d3.select(this).attr("value", "Vinyl");
-			d3.select("#wheelSvg")
-				.transition()
-				.duration(300)
-				.style("opacity", 0)
-				.remove();
-			document.getElementById("wheel-container").style["background"] = "#e0d0c4"; // plus de sens d'avoir un dégradé radial
-			drawHistogram(filteredData, globalParameters);
+			if(currentPlot == "vinyl") {
+				d3.select(this).attr("value", "Vinyl");
+				currentPlot = "histo";
+				d3.select("#wheelSvg").style("opacity", 0).remove();
+				document.getElementById("wheel-container").style["background"] = "#e0d0c4"; // plus de sens d'avoir un dégradé radial
+				drawHistogram(filteredData, globalParameters);
+			}
+			else {
+				//on clique alors que on est sur l'histograme
+				// go sur le vynil
+				
+			}
+			
 		})
 		
 }
 
 function drawHistogram(filteredData, globalParameters){
+	d3.select("#histoSvg").remove();
 	d3.select("#wheel-container").selectAll("wheelSvg").remove();
 	svg = d3.select("#wheel-container").select("svg");
-	svg.attr('transform', null);	
+	svg.attr('transform', null);
 	histoSvg = svg.append("g").attr("id", "histoSvg");
 	histoSvg.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")");
 
@@ -198,8 +207,8 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		.append("rect")
 		.attr('class', '.song')
 		.attr("x", d => x(parseFloat(d.year)))
-		.attr("y", d => y(Math.random() * (globalParameters.height)))
-		.attr("width", 5)
+		.attr("y", d => y(globalParameters.height - d.index_in_year*15))
+		.attr("width", globalParameters.width / (globalParameters.filters.yearLimitHigh - globalParameters.filters.yearLimitLow))
 		.attr("height", 10)
 		.attr("spotify_uri", function(d){
 			 return d.spotify_uri;
@@ -213,12 +222,27 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .style("fill", function(d, i){
 			 return d.random_rgb;
 		 })
+		 .style("stroke", null)
 		 .on('mouseover', function(d, i) {
 			 d3.select(this).classed('hovered-song', true);
 		 })
 		 .on('mouseout', function(d) {
 			 d3.select(this).classed('hovered-song', false);
 		 })
+		 .on('click', function(d) {
+			 showSongInformation(d, globalParameters);
+			 //uncclass previous selected-song, unselected-song etc...
+			 console.log(d3.select("#histoSvg").selectAll("rect"));
+			 d3.selectAll("rect").classed("selected-song", false).attr("unselected-song", false);
+			 d3.selectAll("rect").classed("unhighlight-genre", false);
+
+			 //add class selected-song to the clicked tile
+			 current_song_id = d.spotify_uri;
+			 d3.selectAll("rect").classed("unselected-song", function(d) { return d.spotify_uri !== current_song_id; });
+			 d3.select(this).classed("selected-song", true);
+		 })
+		 .transition()
+		 .duration(30)
 
 	var x_axis = d3.axisTop()
                    .scale(x);
@@ -231,7 +255,7 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 function showGeneralInfo(globalParameters){
 	//removing all other classes to songs (seleceted-song, unslected-song ....)
 	d3.selectAll(".song").attr("class", "song");
-
+	d3.selectAll("rect").attr("class", "song");
 	songInfoContainer = d3.select("#song-info-container");
 	songInfoContainer.selectAll("*").remove();
 	globalParameters.songInfoHTMLCreated = false;
@@ -550,6 +574,7 @@ function createContext(globalParameters, data){
 			globalParameters.filters.yearLimitHigh = new_x1;
 			reDrawCircle(globalParameters);
 			showGeneralInfo(globalParameters);
+			drawHistogram(data, globalParameters);
 		}
 	}
 }

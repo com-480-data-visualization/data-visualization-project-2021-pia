@@ -300,7 +300,6 @@ label{
 	color: #404040;
 	position: relative;
 	padding-bottom: 10px;
-
 }
 
 #song-info-artist:after{
@@ -329,8 +328,6 @@ label{
 #song-info-artist.clicked-artist{
 	color: white;
 }
-
-
 
 
 /* Scrollbar */
