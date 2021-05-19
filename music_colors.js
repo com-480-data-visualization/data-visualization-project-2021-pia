@@ -86,7 +86,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 	var counts = {};
 	for(var i = 0; i < allGenre.length; i++) {
 		var word = allGenre[i].genre;
-		if (word === "") {
+		if (word === "") {	
 			continue;
 		}
 		if(counts[word] === undefined) {
@@ -144,7 +144,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 		 })
 	// Boutton pour l'histograme en d3 plutot que en html
 
-	var currentPlot = "vynil"; //pareil que l'histoire du toggle dans les genres
+	var currentPlot = "vinyl"; //pareil que l'histoire du toggle dans les genres
 
 	d3.select("#left-panel")
 		.append("input")
@@ -154,7 +154,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 		.classed("button_plain", true)
 		.on('click', function(d) {
 			// Ici Histograme. A voir comment modulariser, peut etre que c'est mieux de faire un fichier different ?
-			d3.select(this).attr("value", "Vynil");
+			d3.select(this).attr("value", "Vinyl");
 			d3.select("#wheelSvg")
 				.transition()
 				.duration(300)
@@ -173,27 +173,59 @@ function drawHistogram(filteredData, globalParameters){
 	histoSvg = svg.append("g").attr("id", "histoSvg");
 	histoSvg.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")");
 
-	histoSvg.append('rect')
-		.attr('width', globalParameters.width)
+	histoSvg.attr('width', globalParameters.width)
 		.attr('height', globalParameters.height)
-		.style("fill", "none")
 		.style("stroke", "black");
 
 	//Construct the histogram
-	var x = d3.scaleLinear()
+	const x = d3.scaleLinear()
 		.domain([globalParameters.filters.yearLimitLow, globalParameters.filters.yearLimitHigh])
-		.range(0, globalParameters.width);
+		.range([0, globalParameters.width]);
 
-	var y = d3.scaleLinear()
+	const y = d3.scaleLinear()
 		.domain([0, 1000])
-		.range(0, 200); // A definir ici avec la data le maximum count
+		.range([0, globalParameters.height]); // A definir ici avec la data le maximum count
 
-	drawHistogramTiles(filteredData, globalParameters)
+	drawHistogramTiles(filteredData, globalParameters, x, y)
 
 }
 
-function drawHistogramTiles(filteredData, globalParameters){
-	console.log("Draw tiles now!")
+function drawHistogramTiles(filteredData, globalParameters, x, y){
+	d3.select("#histoSvg")
+		.selectAll(".song")
+		.data(filteredData)
+		.enter()
+		.append("rect")
+		.attr('class', '.song')
+		.attr("x", d => x(parseFloat(d.year)))
+		.attr("y", d => y(Math.random() * (globalParameters.height)))
+		.attr("width", 5)
+		.attr("height", 10)
+		.attr("spotify_uri", function(d){
+			 return d.spotify_uri;
+		 })
+		 .attr("artist", function(d){
+			 return d.artist;
+		 })
+		 .attr("genre", function(d) {
+		 	return d.general_genre;
+		 })
+		 .style("fill", function(d, i){
+			 return d.random_rgb;
+		 })
+		 .on('mouseover', function(d, i) {
+			 d3.select(this).classed('hovered-song', true);
+		 })
+		 .on('mouseout', function(d) {
+			 d3.select(this).classed('hovered-song', false);
+		 })
+
+	var x_axis = d3.axisTop()
+                   .scale(x);
+
+    histoSvg.append("g").attr("transform", "translate(0, "+globalParameters.height+")").call(x_axis);
+    //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
+		
 }
 
 function showGeneralInfo(globalParameters){
