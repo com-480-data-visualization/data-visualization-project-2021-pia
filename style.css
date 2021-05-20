@@ -71,7 +71,7 @@ body {
   border-radius: 0.5em;
   background-clip: padding-box;
   color: white;
-  
+
 }
 
 .button_plain {
@@ -292,6 +292,10 @@ label{
 
 .unhighlight-genre {
 	opacity: 0.2;
+}
+
+.hovered-song.unhighlight-genre{
+	opacity : 0.5;
 }
 
 /*adapted from https://codepen.io/samvdh/pen/MmZzyR*/

@@ -25,12 +25,7 @@ whenDocumentLoaded(() => {
 	svg = d3.select("#wheel-container").append("svg")
 		.attr("width", (width + margin.left + margin.right))
 		.attr("height", (height + margin.top + margin.bottom))
-		.append("g")
-		.attr("transform", "translate(" +(width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")");
-	wheelSvg = svg.append("g")
-				.attr("transform", "rotate(" + 0 +")")
-				.attr("id", "wheelSvg")
-				.attr("currentRotation" , 0);
+		.append("g");
 
 	//2. Store them in a dict
 	var globalParameters = {
@@ -54,18 +49,48 @@ whenDocumentLoaded(() => {
 		},
 		arcGenerator : d3.arc(),
 		svg : svg,
-		wheelSvg : wheelSvg,
+		wheelSvg : null,
+		histoSvg : null,
 		songInfoHTMLCreated : false,
 		artistClicked : false,
+		printedGenre : '',
+		currentPlot : 'vinyl'
 	};
+
+	drawWholeVinyl(globalParameters);
+	drawVinylHistogramButton(globalParameters);
+
+});
+
+function prepareMainSvgForVinyl(globalParameters){
+	globalParameters.svg.attr("transform", "translate(" +(globalParameters.width / 2 + globalParameters.margin.left) + "," + (globalParameters.height / 2 + globalParameters.margin.top) + ")");
+}
+
+function drawWholeVinyl(globalParameters){
+
+	//reset year filters to initial when new vinyl is drawn
+	globalParameters.filters = {
+		yearLimitLow : 1951,
+		yearLimitHigh : 2015
+	}
+	d3.selectAll("#histoSvg").remove();
+	globalParameters.histoSvg = null;
+
+	prepareMainSvgForVinyl(globalParameters);
+	wheelSvg = svg.append("g")
+				.attr("transform", "rotate(" + 0 +")")
+				.attr("id", "wheelSvg")
+				.attr("currentRotation" , 0);
+
+	globalParameters.wheelSvg = wheelSvg;
 
 	d3.csv('small_colors_songs_withSpotify.csv')
 	  .then(function(data) {
-				createContext(globalParameters, data);
-
 				drawSmallMiddleCircle(globalParameters);
 
 				drawSongTiles(data, globalParameters);
+
+				createContext(globalParameters, data);
 
 				showGeneralInfo(globalParameters);
 
@@ -74,10 +99,10 @@ whenDocumentLoaded(() => {
 	  .catch(function(error){
 			console.log(error);
 	  })
-
-});
+}
 
 function drawGenresButtons(filteredData, globalParameters) {
+	//counting the genres in the current filtered data
 	var allGenre = filteredData.map(function(d) {
   		return {
     		genre: d.general_genre,
@@ -86,7 +111,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 	var counts = {};
 	for(var i = 0; i < allGenre.length; i++) {
 		var word = allGenre[i].genre;
-		if (word === "") {	
+		if (word === "") {
 			continue;
 		}
 		if(counts[word] === undefined) {
@@ -108,17 +133,18 @@ function drawGenresButtons(filteredData, globalParameters) {
 	});
 	var mostFrequentGenre = items.slice(0, 5);
 
+	//removing previous genre buttons
 	d3.select("#left-panel")
-		.selectAll("input")
+		.selectAll(".genre-btn")
 		.remove();
 
 
-	var printedGenre = ""; //Le toggle pour le boutton
+	//Le toggle pour le boutton est maintenant dans globalParameters
 	//Simplement on va regarder si le genre clické est le meme, si c'est le meme ca veut dire qu'on doit
 	//tout remettre a 0 quand on reclick dessus.
 	//Y'avais un pb quand on selectionnais une musique et qu'ensuite on cliquait sur un genre, c'est réglé
 	//en placant bien showGeneralInfo ou il faut
-	
+
 	d3.select("#left-panel")
 		.selectAll("input")
 		.data(mostFrequentGenre)
@@ -126,29 +152,34 @@ function drawGenresButtons(filteredData, globalParameters) {
 		.append("input")
 		.attr("type", "button")
 		.attr("id", "btn")
+		.attr("class", "genre-btn")
 		.attr("value", function (d) {
 			return d;
 		}).on('click', function(d) {
 			showGeneralInfo(globalParameters);
-			if(printedGenre == d) { // This means here that we want to turn off the current genre selected.
+			if(globalParameters.printedGenre == d) { // This means here that we want to turn off the current genre selected.
 				showGeneralInfo(globalParameters);
-				printedGenre = "";
+				globalParameters.printedGenre = "";
 				return;
 			}
 			else {
-			 d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
-			 	printedGenre = d;
-			 	return d2.general_genre !== d;
-			 })
-			 d3.selectAll("rect").classed("unhighlight-genre", function(d2) {
-			 	printedGenre = d;
-			 	return d2.general_genre !== d;
-			 })	
-			}	 
+				if ( globalParameters.currentPlot === 'vinyl'){
+					d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
+	 			 	globalParameters.printedGenre = d;
+	 			 	return d2.general_genre !== d;
+	 			 })
+			 } else {
+				 d3.selectAll(".song-rect").classed("unhighlight-genre", function(d2) {
+				 	globalParameters.printedGenre = d;
+				 	return d2.general_genre !== d;
+				 })
+			 }
+			}
 		 })
-	// Boutton pour l'histograme en d3 plutot que en html
+}
 
-	var currentPlot = "vinyl"; //pareil que l'histoire du toggle dans les genres
+function drawVinylHistogramButton(globalParameters){
+	// Boutton pour l'histograme en d3 plutot que en html
 
 	d3.select("#left-panel")
 		.append("input")
@@ -157,55 +188,77 @@ function drawGenresButtons(filteredData, globalParameters) {
 		.classed("button_histo", true)
 		.classed("button_plain", true)
 		.on('click', function(d) {
-			if(currentPlot == "vinyl") {
-				d3.select(this).attr("value", "Vinyl");
-				currentPlot = "histo";
-				d3.select("#wheelSvg").style("opacity", 0).remove();
-				document.getElementById("wheel-container").style["background"] = "#e0d0c4"; // plus de sens d'avoir un dégradé radial
-				drawHistogram(filteredData, globalParameters);
-			}
-			else {
+			if(globalParameters.currentPlot === "vinyl") {
+				d3.select(this).attr("value", "Histo");
+				globalParameters.currentPlot = "histo";
+				d3.select("#wheel-container").style("background", "#e0d0c4"); // plus de sens d'avoir un dégradé radial
+				drawHistogram(globalParameters);
+			} else {
 				//on clique alors que on est sur l'histograme
 				// go sur le vynil
-				
+				d3.select(this).attr("value", "Vinyl");
+				globalParameters.currentPlot = "vinyl";
+				drawWholeVinyl(globalParameters);
 			}
-			
+
 		})
-		
 }
 
-function drawHistogram(filteredData, globalParameters){
-	d3.select("#histoSvg").remove();
-	d3.select("#wheel-container").selectAll("wheelSvg").remove();
-	svg = d3.select("#wheel-container").select("svg");
-	svg.attr('transform', null);
-	histoSvg = svg.append("g").attr("id", "histoSvg");
-	histoSvg.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")");
+function prepareMainSvgForHistogram(globalParameters){
+	globalParameters.svg.attr("transform", null);
+}
 
-	histoSvg.attr('width', globalParameters.width)
+function drawHistogram(globalParameters){
+	//reset year filters to initial when new vinyl is drawn
+	globalParameters.filters = {
+		yearLimitLow : 1951,
+		yearLimitHigh : 2015
+	}
+
+	d3.selectAll("#wheelSvg").remove();
+	globalParameters.wheelSvg = null;
+	d3.select(".context").remove();
+
+	prepareMainSvgForHistogram(globalParameters);
+
+	histoSvg = globalParameters.svg.append("g").attr("id", "histoSvg")
+		.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")")
+		.attr('width', globalParameters.width)
 		.attr('height', globalParameters.height)
 		.style("stroke", "black");
 
-	//Construct the histogram
-	const x = d3.scaleLinear()
-		.domain([globalParameters.filters.yearLimitLow, globalParameters.filters.yearLimitHigh])
-		.range([0, globalParameters.width]);
+	globalParameters.histoSvg = histoSvg;
 
-	const y = d3.scaleLinear()
-		.domain([0, 1000])
-		.range([0, globalParameters.height]); // A definir ici avec la data le maximum count
 
-	drawHistogramTiles(filteredData, globalParameters, x, y)
+		d3.csv('small_colors_songs_withSpotify.csv')
+			.then(function(data) {
+					//Construct the histogram
+					const x = d3.scaleLinear()
+						.domain([globalParameters.filters.yearLimitLow, globalParameters.filters.yearLimitHigh])
+						.range([0, globalParameters.width]);
 
+					const y = d3.scaleLinear()
+						.domain([0, 1000])
+						.range([0, globalParameters.height*1.3]); // A definir ici avec la data le maximum count
+
+					drawHistogramTiles(data, globalParameters, x, y);
+
+					showGeneralInfo(globalParameters);
+
+					drawGenresButtons(data, globalParameters);
+			})
+			.catch(function(error){
+				console.log(error);
+			})
 }
 
 function drawHistogramTiles(filteredData, globalParameters, x, y){
 	d3.select("#histoSvg")
-		.selectAll(".song")
+		.selectAll(".song-rect")
 		.data(filteredData)
 		.enter()
 		.append("rect")
-		.attr('class', '.song')
+		.attr('class', 'song-rect')
 		.attr("x", d => x(parseFloat(d.year)))
 		.attr("y", d => y(globalParameters.height - d.index_in_year*15))
 		.attr("width", globalParameters.width / (globalParameters.filters.yearLimitHigh - globalParameters.filters.yearLimitLow))
@@ -232,13 +285,13 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .on('click', function(d) {
 			 showSongInformation(d, globalParameters);
 			 //uncclass previous selected-song, unselected-song etc...
-			 console.log(d3.select("#histoSvg").selectAll("rect"));
-			 d3.selectAll("rect").classed("selected-song", false).attr("unselected-song", false);
-			 d3.selectAll("rect").classed("unhighlight-genre", false);
+			 console.log(d3.selectAll(".song-rect"));
+			 d3.selectAll(".song-rect").classed("selected-song", false).attr("unselected-song", false);
+			 d3.selectAll(".song-rect").classed("unhighlight-genre", false);
 
 			 //add class selected-song to the clicked tile
 			 current_song_id = d.spotify_uri;
-			 d3.selectAll("rect").classed("unselected-song", function(d) { return d.spotify_uri !== current_song_id; });
+			 d3.selectAll(".song-rect").classed("unselected-song", function(d) { return d.spotify_uri !== current_song_id; });
 			 d3.select(this).classed("selected-song", true);
 		 })
 		 .transition()
@@ -249,13 +302,15 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 
     histoSvg.append("g").attr("transform", "translate(0, "+globalParameters.height+")").call(x_axis);
     //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
-		
+
 }
 
 function showGeneralInfo(globalParameters){
 	//removing all other classes to songs (seleceted-song, unslected-song ....)
 	d3.selectAll(".song").attr("class", "song");
-	d3.selectAll("rect").attr("class", "song");
+
+	d3.selectAll(".song-rect").attr("class", "song-rect");
+
 	songInfoContainer = d3.select("#song-info-container");
 	songInfoContainer.selectAll("*").remove();
 	globalParameters.songInfoHTMLCreated = false;
@@ -300,6 +355,7 @@ function createSongInfoHTML(song, globalParameters){
 	lyricsDiv.append("center").append("h3").text("Lyrics");
 	lyricsDiv.append("div").attr("id", "lyrics-container").style({'font-family': "palatino"});
 	globalParameters.artistClicked = false;
+	globalParameters.printedGenre = '';
 }
 
 function showSongInformation(song, globalParameters){
@@ -320,9 +376,14 @@ function showSongInformation(song, globalParameters){
 		if(!(d3.select(".selected-song").attr("artist") === song.artist)){
 			globalParameters.artistClicked = false;
 			d3.selectAll(".song").classed("same-artist", false);
+			d3.selectAll(".song-rect").classed("same-artist", false);
+
 		} else {
 			var currentlySelectedArtist = song.artist;
 			d3.selectAll(".song").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
+			d3.selectAll(".song-rect").classed("same-artist", function(d){
 				return d.artist === currentlySelectedArtist;
 			})
 		}
@@ -336,6 +397,9 @@ function showSongInformation(song, globalParameters){
 			d3.selectAll(".song").classed("same-artist", function(d){
 				return d.artist === currentlySelectedArtist;
 			})
+			d3.selectAll(".song-rect").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
 		}
 		d3.select(this).classed("clicked-artist", globalParameters.artistClicked);
 	})
@@ -345,11 +409,15 @@ function showSongInformation(song, globalParameters){
 			d3.selectAll(".song").classed("same-artist", function(d){
 				return d.artist === currentlySelectedArtist;
 			})
+			d3.selectAll(".song-rect").classed("same-artist", function(d){
+				return d.artist === currentlySelectedArtist;
+			})
 		}
 	})
 	.on("mouseout", function(){
 		if (!globalParameters.artistClicked){
 			d3.selectAll(".song").classed("same-artist", false);
+			d3.selectAll(".song-rect").classed("same-artist", false);
 		}
 	})
 	.classed("clicked-artist", globalParameters.artistClicked);
@@ -564,7 +632,6 @@ function createContext(globalParameters, data){
 		if (!d3.event.sourceEvent || !selection) return;
 		const [x0, x1] = selection.map(d => d3.timeYear.round(contextXScale.invert(d)));
 		d3.select(this).transition().call(brush.move, x1 > x0 ? [x0, x1].map(contextXScale) : null);
-		globalParameters.startStoppingCircle = true;
 
 		new_x0 = x0.getFullYear();
 		new_x1 = x1.getFullYear();
@@ -574,7 +641,6 @@ function createContext(globalParameters, data){
 			globalParameters.filters.yearLimitHigh = new_x1;
 			reDrawCircle(globalParameters);
 			showGeneralInfo(globalParameters);
-			drawHistogram(data, globalParameters);
 		}
 	}
 }
