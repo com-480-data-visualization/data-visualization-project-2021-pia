@@ -88,7 +88,7 @@ body {
   color: #eee;
   font-size: 16px;
   transition: 1s;
-  -webkit-tap-highlight-color: transparent;
+  /*-webkit-tap-highlight-color: #8c98a1;*/
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -99,7 +99,6 @@ body {
 #btn #circle {
   width: 5px;
   height: 5px;
-  background: transparent;
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -118,7 +117,12 @@ body {
 }
 
 #btn:hover {
-  background: transparent;
+  opacity: 60%;
+}
+
+#btn.clicked-btn {
+	background: #8c98a1;
+	color: black;
 }
 
 #btn:hover #circle {
@@ -171,12 +175,18 @@ body {
 	overflow: auto;
 }
 
+#general-info{
+	width: 100%;
+  height: 90%;
+  padding: 10px;
+}
+
 #about-us-container {
   width: 100%;
   height: 10%;
   padding: 10px;
-  font-size: 0.7rem;
-  border-top: 1px solid black;
+  /*font-size: 0.7rem;*/
+  /*border-top: 1px solid black;*/
 }
 
 /*link style taken from https://codepen.io/samvdh/pen/MmZzyR*/

@@ -160,9 +160,12 @@ function drawGenresButtons(filteredData, globalParameters) {
 			if(globalParameters.printedGenre == d) { // This means here that we want to turn off the current genre selected.
 				showGeneralInfo(globalParameters);
 				globalParameters.printedGenre = "";
-				return;
+				d3.select(this).classed("clicked-btn", false);
 			}
 			else {
+				d3.selectAll(".genre-btn").classed("clicked-btn", false);
+				d3.select(this).classed("clicked-btn", true);
+
 				if (globalParameters.currentPlot === 'vinyl'){
 					d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
 	 			 	globalParameters.printedGenre = d;
@@ -298,9 +301,9 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .duration(30)
 
 	var x_axis = d3.axisTop().scale(x).tickFormat(d3.format("d"));
-	histoSvg.append("text")             
+	histoSvg.append("text")
       .attr("transform",
-            "translate(" + (globalParameters.width/2) + " ," + 
+            "translate(" + (globalParameters.width/2) + " ," +
                            (globalParameters.height + globalParameters.margin.top + 20) + ")")
       .style("text-anchor", "middle")
       .text("Year");
@@ -324,11 +327,21 @@ function showGeneralInfo(globalParameters){
 	generalInfoContainer.append("p").text("You are currently seeing a subset of top 100 songs from "+globalParameters.filters.yearLimitLow+" to "+globalParameters.filters.yearLimitHigh+".");
 	generalInfoContainer.append("p").text("A song is shown on this visualization if its lyrics contain a color word.");
 	generalInfoContainer.append("p").text("You can click on a song to get more details about it.");
-	generalInfoContainer.append("p").text("You can also select a custom time range on the time scale at the bottom.");
+	if (globalParameters.currentPlot === 'vinyl'){
+		generalInfoContainer.append("p").text("You can also select a custom time range on the time scale at the bottom.");
+	}
+
 	generalInfoContainer.append("p").text("You can toggle the filters on the left to show only some music genres.");
 
-	generalInfoContainer.append("p").text("This is a project for the Data visualization course thought at EPFL in 2021.");
-	generalInfoContainer.append("p").text("Authors : Alexander Apostolov, Valentin Garnier and Maina Orchampt-Mareschal");
+
+	usContainer = songInfoContainer.append("div").attr('id', 'about-us-container');
+	usContainer.html('<p>This is a project for the <a href="https://edu.epfl.ch/'+
+	'coursebook/en/data-visualization-COM-480">Data visualization course</a> thou'+
+	'ght at <a href="https://www.epfl.ch/en/">EPFL</a> in 2021.</p><p>Authors : '+
+	'<a href="https://alexander-apostolov.com/">Alexander Apostolov</a>, <a'+
+	' href="https://www.valentingarnier.com/">Valentin Garnier</a> and <a '+
+	'href="https://www.linkedin.com/in/maina-orchampt-mareschal">Maina '+
+	'Orchampt-Mareschal</a></p>');
 }
 
 function createSongInfoHTML(song, globalParameters){
@@ -360,6 +373,7 @@ function createSongInfoHTML(song, globalParameters){
 	lyricsDiv.append("div").attr("id", "lyrics-container").style({'font-family': "palatino"});
 	globalParameters.artistClicked = false;
 	globalParameters.printedGenre = '';
+	d3.selectAll(".genre-btn").classed("clicked-btn", false);
 }
 
 function showSongInformation(song, globalParameters){
@@ -469,8 +483,8 @@ function filterData(data, globalParameters){
 }
 
 function reDrawCircle(globalParameters){
-
-	d3.select("#wheelSvg")
+	globalParameters.printedGenre = '';
+	d3.selectAll(".genre-btn").classed("clicked-btn", false);	d3.select("#wheelSvg")
 	.selectAll(".song")
 	.attr("class", "removedSongs")
 	.transition()
