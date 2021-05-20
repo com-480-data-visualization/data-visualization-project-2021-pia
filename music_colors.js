@@ -131,7 +131,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 	items = items.map(function(d) {
 		return d[0];
 	});
-	var mostFrequentGenre = items.slice(0, 5);
+	var mostFrequentGenre = items.slice(0, 6);
 
 	//removing previous genre buttons
 	d3.select("#left-panel")
@@ -163,7 +163,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 				return;
 			}
 			else {
-				if ( globalParameters.currentPlot === 'vinyl'){
+				if (globalParameters.currentPlot === 'vinyl'){
 					d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
 	 			 	globalParameters.printedGenre = d;
 	 			 	return d2.general_genre !== d;
@@ -189,15 +189,17 @@ function drawVinylHistogramButton(globalParameters){
 		.classed("button_plain", true)
 		.on('click', function(d) {
 			if(globalParameters.currentPlot === "vinyl") {
-				d3.select(this).attr("value", "Histo");
+				d3.select(this).attr("value", "Vinyl");
 				globalParameters.currentPlot = "histo";
 				d3.select("#wheel-container").style("background", "#e0d0c4"); // plus de sens d'avoir un dégradé radial
 				drawHistogram(globalParameters);
 			} else {
 				//on clique alors que on est sur l'histograme
 				// go sur le vynil
-				d3.select(this).attr("value", "Vinyl");
+				d3.select(this).attr("value", "Histogram");
 				globalParameters.currentPlot = "vinyl";
+				d3.select("#wheel-container").style("background", "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,208,196,1) 20%)");
+				d3.select("#wheel-container").style("background-position", "0px -50px");
 				drawWholeVinyl(globalParameters);
 			}
 
@@ -225,7 +227,6 @@ function drawHistogram(globalParameters){
 		.attr("transform", "translate(" +(globalParameters.margin.left) + "," + (globalParameters.margin.top) + ")")
 		.attr('width', globalParameters.width)
 		.attr('height', globalParameters.height)
-		.style("stroke", "black");
 
 	globalParameters.histoSvg = histoSvg;
 
@@ -239,7 +240,7 @@ function drawHistogram(globalParameters){
 
 					const y = d3.scaleLinear()
 						.domain([0, 1000])
-						.range([0, globalParameters.height*1.3]); // A definir ici avec la data le maximum count
+						.range([0, globalParameters.height*1.15]);
 
 					drawHistogramTiles(data, globalParameters, x, y);
 
@@ -261,7 +262,7 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		.attr('class', 'song-rect')
 		.attr("x", d => x(parseFloat(d.year)))
 		.attr("y", d => y(globalParameters.height - d.index_in_year*15))
-		.attr("width", globalParameters.width / (globalParameters.filters.yearLimitHigh - globalParameters.filters.yearLimitLow))
+		.attr("width", 10)
 		.attr("height", 10)
 		.attr("spotify_uri", function(d){
 			 return d.spotify_uri;
@@ -285,7 +286,6 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .on('click', function(d) {
 			 showSongInformation(d, globalParameters);
 			 //uncclass previous selected-song, unselected-song etc...
-			 console.log(d3.selectAll(".song-rect"));
 			 d3.selectAll(".song-rect").classed("selected-song", false).attr("unselected-song", false);
 			 d3.selectAll(".song-rect").classed("unhighlight-genre", false);
 
@@ -297,12 +297,16 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .transition()
 		 .duration(30)
 
-	var x_axis = d3.axisTop()
-                   .scale(x);
+	var x_axis = d3.axisTop().scale(x).tickFormat(d3.format("d"));
+	histoSvg.append("text")             
+      .attr("transform",
+            "translate(" + (globalParameters.width/2) + " ," + 
+                           (globalParameters.height + globalParameters.margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
 
     histoSvg.append("g").attr("transform", "translate(0, "+globalParameters.height+")").call(x_axis);
     //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
-
 }
 
 function showGeneralInfo(globalParameters){
