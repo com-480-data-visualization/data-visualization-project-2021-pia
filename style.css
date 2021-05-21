@@ -43,7 +43,7 @@ body {
 	align-content: center;
 
 	/* background behind the plot */
-	background: #e0d0c4;
+	background-color: #c9af9d;
 }
 
 #left-panel {
@@ -53,8 +53,9 @@ body {
 	justify-content: center;
 	align-content: center;
 	text-align: center;
-	background-color: #bda493;
+	background-color: #e0d0c4;
 	position: relative;
+	box-shadow: 1px 0px 11px 1px #243137;
 }
 
 .button_histo {
@@ -87,7 +88,7 @@ body {
   border-radius: 10px;
   color: #eee;
   font-size: 16px;
-  transition: 1s;
+  transition: 0.5s;
   /*-webkit-tap-highlight-color: #8c98a1;*/
   align-items: center;
   justify-content: center;
@@ -139,7 +140,7 @@ body {
     height: 100%;
     text-align: center;
     box-shadow: -8px 0px 10px -5px #243137;
-	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,208,196,1) 20%);
+	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(201,175,157,1) 20%);
 	background-position: 0px -50px;
 }
 
@@ -193,7 +194,7 @@ body {
 
 a{
 	text-decoration: none;
-	color: #404040;
+	color: #f0e9e4;
 	padding-bottom: 3px;
 	position: relative;
 }

@@ -132,6 +132,9 @@ function drawGenresButtons(filteredData, globalParameters) {
 		return d[0];
 	});
 	var mostFrequentGenre = items.slice(0, 6);
+	for(var i = 1 ; i < mostFrequentGenre.length ; i++){
+        mostFrequentGenre[i] = mostFrequentGenre[i].charAt(0).toUpperCase() + mostFrequentGenre[i].substr(1);;
+    } 
 
 	//removing previous genre buttons
 	d3.select("#left-panel")
@@ -194,14 +197,14 @@ function drawVinylHistogramButton(globalParameters){
 			if(globalParameters.currentPlot === "vinyl") {
 				d3.select(this).attr("value", "Vinyl");
 				globalParameters.currentPlot = "histo";
-				d3.select("#wheel-container").style("background", "#e0d0c4"); // plus de sens d'avoir un dégradé radial
+				d3.select("#wheel-container").style("background", "#c9af9d"); // plus de sens d'avoir un dégradé radial
 				drawHistogram(globalParameters);
 			} else {
 				//on clique alors que on est sur l'histograme
 				// go sur le vynil
 				d3.select(this).attr("value", "Histogram");
 				globalParameters.currentPlot = "vinyl";
-				d3.select("#wheel-container").style("background", "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,208,196,1) 20%)");
+				d3.select("#wheel-container").style("background", "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(201,175,157,1) 20%)");
 				d3.select("#wheel-container").style("background-position", "0px -50px");
 				drawWholeVinyl(globalParameters);
 			}
@@ -265,8 +268,8 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		.attr('class', 'song-rect')
 		.attr("x", d => x(parseFloat(d.year)))
 		.attr("y", d => y(globalParameters.height - d.index_in_year*15))
-		.attr("width", 10)
-		.attr("height", 10)
+		.attr("width", "1.3%")
+		.attr("height", "1.3%")
 		.attr("spotify_uri", function(d){
 			 return d.spotify_uri;
 		 })
@@ -300,15 +303,16 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		 .transition()
 		 .duration(30)
 
-	var x_axis = d3.axisTop().scale(x).tickFormat(d3.format("d"));
+	var x_axis = d3.axisBottom().scale(x).tickFormat(d3.format("d"));
 	histoSvg.append("text")
       .attr("transform",
             "translate(" + (globalParameters.width/2) + " ," +
-                           (globalParameters.height + globalParameters.margin.top + 20) + ")")
+                           (globalParameters.height - globalParameters.margin.top - globalParameters.margin.bottom + 40) + ")")
       .style("text-anchor", "middle")
       .text("Year");
 
-    histoSvg.append("g").attr("transform", "translate(0, "+globalParameters.height+")").call(x_axis);
+    histoSvg.append("g").attr("transform", 
+    					"translate(0, "+(globalParameters.height - globalParameters.margin.top - globalParameters.margin.bottom)+")").call(x_axis);
     //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
 }
 
@@ -389,6 +393,7 @@ function showSongInformation(song, globalParameters){
 	const spotify_player = document.getElementById("spotify-player");
 	song_name.innerHTML = song.title;
 	song_artist.innerHTML = song.artist;
+	song_artist.style.color = "#f0e9e4";
 
 	if (globalParameters.artistClicked){
 		if(!(d3.select(".selected-song").attr("artist") === song.artist)){
