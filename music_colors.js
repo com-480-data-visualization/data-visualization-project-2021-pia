@@ -59,6 +59,12 @@ whenDocumentLoaded(() => {
 
 	drawWholeVinyl(globalParameters);
 	drawVinylHistogramButton(globalParameters);
+	
+	d3.select('body').on("keypress", function() {
+  		if(d3.event.keyCode === 27){
+    	showGeneralInfo(globalParameters);
+    }
+  })
 
 });
 
@@ -337,7 +343,6 @@ function drawHistogramTiles(filteredData, globalParameters, x, y, square_size){
 
   histoSvg.append("g").attr("transform",
   					"translate("+(square_size/2)+", "+(globalParameters.height+square_size*1.3)+")").call(x_axis);
-  //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
 }
 
 function showGeneralInfo(globalParameters){
