@@ -242,15 +242,35 @@ function drawHistogram(globalParameters){
 		d3.csv('small_colors_songs_withSpotify.csv')
 			.then(function(data) {
 					//Construct the histogram
+
+					//we want each song to be a square so we must find what is the biggest
+					//size we can use according to the height and width
+					const max_available_width = (globalParameters.width - globalParameters.margin.right) - globalParameters.margin.left;
+					const number_years = globalParameters.filters.yearLimitHigh - globalParameters.filters.yearLimitLow +1;
+					const max_available_square_width = max_available_width/number_years;
+
+					const max_available_height = (globalParameters.height - globalParameters.margin.top);
+					const index_in_year_extent = d3.extent(data, function(d_element) { return +d_element.index_in_year; });
+					const max_number_songs_in_a_year = index_in_year_extent[1] + 1;
+					const max_available_square_height = max_available_height/max_number_songs_in_a_year;
+
+					const square_size = d3.min([max_available_square_width, max_available_square_height]);
+
+					const x_range_size = square_size*number_years;
+					const y_range_size = square_size*max_number_songs_in_a_year;
+
+
 					const x = d3.scaleLinear()
 						.domain([globalParameters.filters.yearLimitLow, globalParameters.filters.yearLimitHigh])
-						.range([0, globalParameters.width]);
+						.range([globalParameters.margin.left, globalParameters.margin.left+x_range_size]);
+
 
 					const y = d3.scaleLinear()
-						.domain([0, 1000])
-						.range([0, globalParameters.height*1.15]);
+						.domain(index_in_year_extent)
+						//range is reversed so that it grows from the bottom upwards
+						.range([globalParameters.height, globalParameters.height-y_range_size]);
 
-					drawHistogramTiles(data, globalParameters, x, y);
+					drawHistogramTiles(data, globalParameters, x, y, square_size);
 
 					showGeneralInfo(globalParameters);
 
@@ -261,7 +281,8 @@ function drawHistogram(globalParameters){
 			})
 }
 
-function drawHistogramTiles(filteredData, globalParameters, x, y){
+function drawHistogramTiles(filteredData, globalParameters, x, y, square_size){
+	const square_size_without_margins = square_size*0.95;
 	d3.select("#histoSvg")
 		.selectAll(".song-rect")
 		.data(filteredData)
@@ -269,9 +290,9 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 		.append("rect")
 		.attr('class', 'song-rect')
 		.attr("x", d => x(parseFloat(d.year)))
-		.attr("y", d => y(globalParameters.height - d.index_in_year*15))
-		.attr("width", "1.3%")
-		.attr("height", "1.3%")
+		.attr("y", d => y(+d.index_in_year))
+		.attr("width", square_size_without_margins)
+		.attr("height", square_size_without_margins)
 		.attr("spotify_uri", function(d){
 			 return d.spotify_uri;
 		 })
@@ -309,13 +330,13 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 	histoSvg.append("text")
       .attr("transform",
             "translate(" + (globalParameters.width/2) + " ," +
-                           (globalParameters.height - globalParameters.margin.top - globalParameters.margin.bottom + 40) + ")")
+                           (globalParameters.height + square_size*6) + ")")
       .style("text-anchor", "middle")
       .text("Year");
 
-    histoSvg.append("g").attr("transform",
-    					"translate(0, "+(globalParameters.height - globalParameters.margin.top - globalParameters.margin.bottom)+")").call(x_axis);
-    //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
+  histoSvg.append("g").attr("transform",
+  					"translate("+(square_size/2)+", "+(globalParameters.height+square_size*1.3)+")").call(x_axis);
+  //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
 }
 
 function showGeneralInfo(globalParameters){
@@ -464,7 +485,12 @@ function showSongInformation(song, globalParameters){
 
 	var tags = song.tags.replace(/"/g, '').replace(/'/g, '"');
 	var parsed_tags = JSON.parse(tags);
-	song_genre.text((parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0]);
+	//song_genre.text((parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0]);
+	var song_general_genre = song.general_genre;
+	if (song_general_genre === ''){
+		song_general_genre = 'other';
+	}
+	song_genre.text(song_general_genre);
 
 	song_lyrics.html(song.preprocessed_lyrics);
 	song_lyrics.style('fontFamily', "Palatino");
