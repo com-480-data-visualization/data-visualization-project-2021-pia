@@ -196,6 +196,7 @@ function drawVinylHistogramButton(globalParameters){
 		.classed("button_histo", true)
 		.classed("button_plain", true)
 		.on('click', function(d) {
+			globalParameters.printedGenre = '';
 			if(globalParameters.currentPlot === "vinyl") {
 				d3.select(this).attr("value", "Vinyl");
 				globalParameters.currentPlot = "histo";
