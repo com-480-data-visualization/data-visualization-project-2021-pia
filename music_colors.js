@@ -63,7 +63,9 @@ whenDocumentLoaded(() => {
 });
 
 function prepareMainSvgForVinyl(globalParameters){
-	globalParameters.svg.attr("transform", "translate(" +(globalParameters.width / 2 + globalParameters.margin.left) + "," + (globalParameters.height / 2 + globalParameters.margin.top) + ")");
+	globalParameters.svg.attr("transform", "translate(" +
+	(globalParameters.width / 2 + globalParameters.margin.left) +
+	 "," + (globalParameters.height / 2 + globalParameters.margin.top) + ")");
 }
 
 function drawWholeVinyl(globalParameters){
@@ -134,7 +136,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 	var mostFrequentGenre = items.slice(0, 6);
 	for(var i = 1 ; i < mostFrequentGenre.length ; i++){
         mostFrequentGenre[i] = mostFrequentGenre[i].charAt(0).toUpperCase() + mostFrequentGenre[i].substr(1);;
-    } 
+    }
 
 	//removing previous genre buttons
 	d3.select("#left-panel")
@@ -160,7 +162,7 @@ function drawGenresButtons(filteredData, globalParameters) {
 			return d;
 		}).on('click', function(d) {
 			showGeneralInfo(globalParameters);
-			if(globalParameters.printedGenre == d) { // This means here that we want to turn off the current genre selected.
+			if(globalParameters.printedGenre == d.toLowerCase()) { // This means here that we want to turn off the current genre selected.
 				showGeneralInfo(globalParameters);
 				globalParameters.printedGenre = "";
 				d3.select(this).classed("clicked-btn", false);
@@ -171,13 +173,13 @@ function drawGenresButtons(filteredData, globalParameters) {
 
 				if (globalParameters.currentPlot === 'vinyl'){
 					d3.selectAll(".song").classed("unhighlight-genre", function(d2) {
-	 			 	globalParameters.printedGenre = d;
-	 			 	return d2.general_genre !== d;
+	 			 	globalParameters.printedGenre = d.toLowerCase();
+	 			 	return d2.general_genre !== d.toLowerCase();
 	 			 })
 			 } else {
 				 d3.selectAll(".song-rect").classed("unhighlight-genre", function(d2) {
-				 	globalParameters.printedGenre = d;
-				 	return d2.general_genre !== d;
+				 	globalParameters.printedGenre = d.toLowerCase();
+				 	return d2.general_genre !== d.toLowerCase();
 				 })
 			 }
 			}
@@ -277,7 +279,7 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
 			 return d.artist;
 		 })
 		 .attr("genre", function(d) {
-		 	return d.general_genre;
+		 	return d.general_genre.toLowerCase();
 		 })
 		 .style("fill", function(d, i){
 			 return d.random_rgb;
@@ -311,7 +313,7 @@ function drawHistogramTiles(filteredData, globalParameters, x, y){
       .style("text-anchor", "middle")
       .text("Year");
 
-    histoSvg.append("g").attr("transform", 
+    histoSvg.append("g").attr("transform",
     					"translate(0, "+(globalParameters.height - globalParameters.margin.top - globalParameters.margin.bottom)+")").call(x_axis);
     //histoSvg.append("g").attr("transform", "translate("+10+", 0)").call(y_axis);
 }
@@ -384,16 +386,16 @@ function showSongInformation(song, globalParameters){
 	if (!globalParameters.songInfoHTMLCreated){
 		createSongInfoHTML(song, globalParameters);
 	}
-	const song_name = document.getElementById("song-info-name");
-	const song_artist = document.getElementById("song-info-artist");
-	const song_genre = document.getElementById("song-info-genre");
-	const song_position = document.getElementById("song-info-position");
-	const song_year = document.getElementById("song-info-year");
-	const song_lyrics = document.getElementById("lyrics-container");
-	const spotify_player = document.getElementById("spotify-player");
-	song_name.innerHTML = song.title;
-	song_artist.innerHTML = song.artist;
-	song_artist.style.color = "#f0e9e4";
+	const song_name = d3.select("#song-info-name");
+	const song_artist = d3.select("#song-info-artist");
+	const song_genre = d3.select("#song-info-genre");
+	const song_position = d3.select("#song-info-position");
+	const song_year = d3.select("#song-info-year");
+	const song_lyrics = d3.select("#lyrics-container");
+	const spotify_player = d3.select("#spotify-player");
+	song_name.text(song.title);
+	song_artist.text(song.artist);
+	song_artist.style("color", "#f0e9e4")
 
 	if (globalParameters.artistClicked){
 		if(!(d3.select(".selected-song").attr("artist") === song.artist)){
@@ -445,29 +447,30 @@ function showSongInformation(song, globalParameters){
 	})
 	.classed("clicked-artist", globalParameters.artistClicked);
 
-	song_position.innerHTML = song.pos;
-	song_year.innerHTML = song.year;
+	song_position.text(song.pos);
+	song_year.text(song.year);
 	//updating the Spotify play button only if there is no other one yet or if there is one it is another song
 	//(so that music is not interrupted if user clicked on same song)
+
 	if (! globalParameters.songInfoHTMLCreated){
-		spotify_player.src = "https://open.spotify.com/embed/track/" + song.spotify_uri;
+		spotify_player.attr('src', "https://open.spotify.com/embed/track/" + song.spotify_uri);
 	} else {
 		currentlyShownMusic = d3.select(".selected-song").attr("spotify_uri");
 		if(currentlyShownMusic !== song.spotify_uri){
-			spotify_player.src = "https://open.spotify.com/embed/track/" + song.spotify_uri;
+			spotify_player.attr('src', "https://open.spotify.com/embed/track/" + song.spotify_uri);
 		}
 	}
 
 
 	var tags = song.tags.replace(/"/g, '').replace(/'/g, '"');
 	var parsed_tags = JSON.parse(tags);
-	song_genre.innerHTML = (parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0];
+	song_genre.text((parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0]);
 
-	song_lyrics.innerHTML = song.preprocessed_lyrics;
-	song_lyrics.style.fontFamily = "Palatino";
+	song_lyrics.html(song.preprocessed_lyrics);
+	song_lyrics.style('fontFamily', "Palatino");
 
 	var offset = getOffsetOfFirstColoredWord();
-	song_lyrics.scroll(0, offset);
+	song_lyrics.node().scroll(0, offset);
 	globalParameters.songInfoHTMLCreated = true;
 }
 
@@ -547,7 +550,7 @@ function drawSongTiles(filteredData, globalParameters){
 			 return d.artist;
 		 })
 		 .attr("genre", function(d) {
-		 	return d.general_genre;
+		 	return d.general_genre.toLowerCase();
 		 })
 		 .style("fill", function(d, i) {
 			 return 'transparent';
