@@ -11,7 +11,9 @@ In this project we present the color of songs. This repository contains:
 - the data folder
 - a data preprocessing notebook
 - code for the visualization:
-	- index.html, style.css and music_color.js
+	- index.html
+	- style.css
+	- music_color.js
 
 This repository hosts the application which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/) 
 
