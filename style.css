@@ -25,7 +25,7 @@ html, body, figure {
 	padding: 0;
 	margin: 0;
 	border: 0;
-	font-family: Helvetica;
+	font-family: Georgia, serif;
 	color:#222f38;
 	overflow: hidden;
 }
@@ -208,7 +208,7 @@ a:after{
 	width: 0%;
 	height: 100%;
 
-	border-bottom: 2px solid #404040;
+	border-bottom: 2px solid #f0e9e4;
 
 	transition: width 0.3s ease;
 }
@@ -312,10 +312,12 @@ label{
 /*adapted from https://codepen.io/samvdh/pen/MmZzyR*/
 
 #song-info-artist{
-	color: #404040;
+	color: #f0e9e4;
 	position: relative;
-	padding-bottom: 10px;
+	padding-bottom: 3px;
 }
+
+
 
 #song-info-artist:after{
 	content: '';
@@ -325,7 +327,7 @@ label{
 
 	width: 0%;
 	height: 100%;
-	border-bottom: 2px solid #404040;
+	border-bottom: 2px solid #f0e9e4;
 	transition: all 0.3s ease;
 }
 #song-info-artist:hover:after{
@@ -341,7 +343,7 @@ label{
 }
 
 #song-info-artist.clicked-artist{
-	color: white;
+	color: #f0e9e4;
 }
 
 
