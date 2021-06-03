@@ -8,14 +8,19 @@
 
 
 In this project we present the color of songs. This repository contains:
-- the data folder
-- a data preprocessing notebook
-- code for the visualization:
+- The data folder
+- CSV files which represents our final dataframes
+- Images from previous milestones: screenshots and sketches
+- Exploratory and preprocessing notebook _exploratory\_analysis.ipynb_
+- The process book
+- Code for the application:
 	- index.html
 	- style.css
 	- music_color.js
 
-This repository hosts the application which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/) 
+This repository hosts the application on github which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/) 
+
+Here's the access to the [screencast](https://youtube.com)
 
 
 [Milestone 1](#milestone-1) • [Milestone 2](#milestone-2) • [Milestone 3](#milestone-3)
@@ -159,6 +164,8 @@ We have already worked on some parts of the project and you can see the results 
 ## Milestone 3 (4th June, 5pm)
 
 **80% of the final grade**
+
+The process book is accessible in the repository and [here](https://youtube.com) you can access the screencast.
 
 
 ## Late policy
