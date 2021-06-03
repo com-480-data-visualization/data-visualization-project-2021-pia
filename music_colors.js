@@ -72,6 +72,14 @@ whenDocumentLoaded(() => {
     drawWholeVinyl(globalParameters);
     drawVinylHistogramButton(globalParameters);
 
+    //if user presses Q, removes all selection from genres or song or artist
+    d3.select('body').on("keypress", function() {
+        if (d3.event.keyCode === 113) {
+          globalParameters.printedGenre = "";
+          d3.selectAll('.genre-btn').classed("clicked-btn", false);
+          showGeneralInfo(globalParameters);
+        }
+    })
 });
 
 
@@ -479,13 +487,6 @@ function createSongInfoHTML(globalParameters) {
     closeButton.on("click", function() {
         showGeneralInfo(globalParameters);
     });
-
-    //if user presses Q, same effect as pressing the close button
-    d3.select('body').on("keypress", function() {
-        if (d3.event.keyCode === 113) {
-          showGeneralInfo(globalParameters);
-        }
-    })
 
     generalInfoDiv = songInfoContainer.insert("div").attr("id", "general-info-song");
     lyricsDiv = songInfoContainer.insert("div").attr("id", "song-info-lyrics");
