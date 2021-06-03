@@ -122,7 +122,7 @@ function drawWholeVinyl(globalParameters) {
 
     globalParameters.wheelSvg = wheelSvg;
 
-    d3.csv('final_songs_withSpotify.csv')
+    d3.csv('csv_files/final_songs_withSpotify.csv')
         .then(function(data) {
             drawSmallMiddleCircle(globalParameters);
 
@@ -305,7 +305,7 @@ function drawHistogram(globalParameters) {
     globalParameters.histoSvg = histoSvg;
 
 
-    d3.csv('final_songs_withSpotify.csv')
+    d3.csv('csv_files/final_songs_withSpotify.csv')
         .then(function(data) {
             //Construct the histogram
 
@@ -669,7 +669,7 @@ function reDrawCircle(globalParameters) {
         .remove();
 
     //draw new vinyl
-    d3.csv('final_songs_withSpotify.csv')
+    d3.csv('csv_files/final_songs_withSpotify.csv')
         .then(function(data) {
             var filteredData = filterData(data, globalParameters);
             drawGenresButtons(filteredData, globalParameters);
