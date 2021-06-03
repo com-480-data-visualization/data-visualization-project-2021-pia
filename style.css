@@ -411,9 +411,11 @@ label{
 }
 .beige_word {
 	color: beige;
+	-webkit-text-stroke: 1px black;
 }
 .tan_word {
 	color: tan;
+	-webkit-text-stroke: 1px black;
 }
 .coral_word {
 	color: coral;

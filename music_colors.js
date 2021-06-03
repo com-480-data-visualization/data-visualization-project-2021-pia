@@ -59,7 +59,7 @@ whenDocumentLoaded(() => {
 
 	drawWholeVinyl(globalParameters);
 	drawVinylHistogramButton(globalParameters);
-	
+
 	d3.select('body').on("keypress", function() {
   		if(d3.event.keyCode === 27){
     	showGeneralInfo(globalParameters);
@@ -92,7 +92,7 @@ function drawWholeVinyl(globalParameters){
 
 	globalParameters.wheelSvg = wheelSvg;
 
-	d3.csv('small_colors_songs_withSpotify.csv')
+	d3.csv('final_songs_withSpotify.csv')
 	  .then(function(data) {
 				drawSmallMiddleCircle(globalParameters);
 
@@ -246,7 +246,7 @@ function drawHistogram(globalParameters){
 	globalParameters.histoSvg = histoSvg;
 
 
-		d3.csv('small_colors_songs_withSpotify.csv')
+		d3.csv('final_songs_withSpotify.csv')
 			.then(function(data) {
 					//Construct the histogram
 
@@ -420,6 +420,7 @@ function showSongInformation(song, globalParameters){
 	const song_year = d3.select("#song-info-year");
 	const song_lyrics = d3.select("#lyrics-container");
 	const spotify_player = d3.select("#spotify-player");
+	const detected_color = song.color;
 	song_name.text(song.title);
 	song_artist.text(song.artist);
 	song_artist.style("color", "#f0e9e4")
@@ -491,7 +492,6 @@ function showSongInformation(song, globalParameters){
 
 	var tags = song.tags.replace(/"/g, '').replace(/'/g, '"');
 	var parsed_tags = JSON.parse(tags);
-	//song_genre.text((parsed_tags.length > 1) ? parsed_tags[0] +" "+ parsed_tags[1] : parsed_tags[0]);
 	var song_general_genre = song.general_genre;
 	if (song_general_genre === ''){
 		song_general_genre = 'other';
@@ -501,14 +501,14 @@ function showSongInformation(song, globalParameters){
 	song_lyrics.html(song.preprocessed_lyrics);
 	song_lyrics.style('fontFamily', "Palatino");
 
-	var offset = getOffsetOfFirstColoredWord();
+	var offset = getOffsetOfFirstColoredWord(detected_color);
 	song_lyrics.node().scroll(0, offset);
 	globalParameters.songInfoHTMLCreated = true;
 }
 
-function getOffsetOfFirstColoredWord(){
-	var parentPos = d3.select('.colored_word').node().parentNode.getBoundingClientRect(),
-			childPos = d3.select('.colored_word').node().getBoundingClientRect();
+function getOffsetOfFirstColoredWord(color){
+	var parentPos = d3.select('.'+color+'_word').node().parentNode.getBoundingClientRect(),
+			childPos = d3.select('.'+color+'_word').node().getBoundingClientRect();
 
 	var offset = childPos.top - parentPos.top;
 	return offset
@@ -532,7 +532,7 @@ function reDrawCircle(globalParameters){
 	.style("opacity", 0)
 	.remove();
 
-	d3.csv('small_colors_songs_withSpotify.csv')
+	d3.csv('final_songs_withSpotify.csv')
 		.then(function(data) {
 				var filteredData = filterData(data, globalParameters);
 				drawGenresButtons(filteredData, globalParameters);
@@ -701,46 +701,4 @@ function createContext(globalParameters, data){
 			showGeneralInfo(globalParameters);
 		}
 	}
-}
-
-
-//Unused Functions :
-function startMovingCircle(){
-	d3.selectAll('#wheelSvg')
-	.transition()
-	.delay(1000)
-	.duration(1000)
-	.ease(d3.easeQuadIn)
-	.attrTween("transform", tween)
-	.on("end", moveCircle);
-
-  function tween(d, i, a) {
-		var currentRotation = d3.select(this).attr("currentRotation")%360;
-		d3.select(this).attr("currentRotation", currentRotation+180)
-    return d3.interpolateString("rotate("+currentRotation+")", "rotate("+(currentRotation+180)+")");
-  };
-}
-
-function moveCircle() {
-	d3.selectAll('#wheelSvg')
-	.transition()
-	.duration(2000)
-	.ease(d3.easeLinear)
-	.attrTween("transform", tween)
-	.on("end", () => {
-		if(startStoppingCircle){
-			console.log("end");
-			circleIsMoving = false;
-			startStoppingCircle = false;
-			return;
-		} else {
-			moveCircle();
-		}
-	});
-
-  function tween(d, i, a) {
-		var currentRotation = d3.select(this).attr("currentRotation")%360;
-		d3.select(this).attr("currentRotation", currentRotation+360*4)
-    return d3.interpolateString("rotate("+currentRotation+")", "rotate("+(currentRotation+360*4)+")");
-  };
 }
