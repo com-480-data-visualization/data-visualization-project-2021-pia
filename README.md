@@ -6,6 +6,18 @@
 | Valentin Garnier | 258259 |
 | Maina Orchampt-Mareschal | 244960 |
 
+
+In this project we present the color of songs. This repository contains:
+- the data folder
+- a data preprocessing notebook
+- code for the visualization:
+	- index.html
+	- style.css
+	- music_color.js
+
+This repository hosts the application which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/) 
+
+
 [Milestone 1](#milestone-1) • [Milestone 2](#milestone-2) • [Milestone 3](#milestone-3)
 
 ## Milestone 1 (23rd April, 5pm)
