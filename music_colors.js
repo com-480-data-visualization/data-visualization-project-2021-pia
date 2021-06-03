@@ -497,7 +497,7 @@ function createSongInfoHTML(globalParameters) {
     generalInfoDiv.append("p").text("Year: ").append("em").attr("id", "song-info-year");
     generalInfoDiv.append("p").text("Ranking: ").append("em").attr("id", "song-info-position");
     generalInfoDiv.append("iframe").attr("id", "spotify-player").attr("src", "")
-        .attr("width", "300").attr("height", "80").attr("frameborder", "0")
+        .attr("width", "300").attr("height", "30%").attr("frameborder", "0")
         .attr("allowtransparency", "true").attr("allow", "encrypted-media");
 
     lyricsDiv.append("center").append("h3").text("Lyrics");
