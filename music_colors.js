@@ -13,7 +13,6 @@ function whenDocumentLoaded(action) {
     }
 }
 
-
 /**
  * Main piece of code for our website
  * Generates the global parameters and
@@ -82,7 +81,6 @@ whenDocumentLoaded(() => {
     })
 });
 
-
 /**
  * prepareMainSvgForVinyl - Prepares the main SVG for the vinyl to be drawn
  * by setting the translate to be in the middle of the circle that is going
@@ -97,7 +95,6 @@ function prepareMainSvgForVinyl(globalParameters) {
         (globalParameters.width / 2 + globalParameters.margin.left) +
         "," + (globalParameters.height / 2 + globalParameters.margin.top) + ")");
 }
-
 
 /**
  * drawWholeVinyl - Draws the vinyl with initial parameters and no selection.
@@ -138,7 +135,6 @@ function drawWholeVinyl(globalParameters) {
             console.log(error);
         })
 }
-
 
 /**
  * drawGenresButtons - Draws the genre buttons for the top 5 main genres of the
@@ -228,7 +224,6 @@ function drawGenresButtons(filteredData, globalParameters) {
         })
 }
 
-
 /**
  * drawVinylHistogramButton - Draws the button to change between the vinyl and
  *  the histogram.
@@ -265,7 +260,6 @@ function drawVinylHistogramButton(globalParameters) {
         })
 }
 
-
 /**
  * prepareMainSvgForHistogram - Prepares the main SVG for the histogram by removing
  * the transform.
@@ -276,7 +270,6 @@ function drawVinylHistogramButton(globalParameters) {
 function prepareMainSvgForHistogram(globalParameters) {
     globalParameters.svg.attr("transform", null);
 }
-
 
 /**
  * drawHistogram - Draws the Histogram of all songs.
@@ -348,7 +341,6 @@ function drawHistogram(globalParameters) {
             console.log(error);
         })
 }
-
 
 /**
  * drawHistogramTiles - Draws all histogram tiles.
@@ -427,7 +419,6 @@ function drawHistogramTiles(filteredData, globalParameters, x, y, square_size) {
         "translate(" + (square_size / 2) + ", " + (globalParameters.height + square_size * 1.3) + ")").call(x_axis);
 }
 
-
 /**
  * showGeneralInfo - Shows the general info when no song is selected.
  *
@@ -467,7 +458,6 @@ function showGeneralInfo(globalParameters) {
         'Orchampt-Mareschal</a></p>');
 }
 
-
 /**
  * createSongInfoHTML - Creates the HTML elements that are used for displaying
  * song information.
@@ -489,6 +479,7 @@ function createSongInfoHTML(globalParameters) {
     });
 
     generalInfoDiv = songInfoContainer.insert("div").attr("id", "general-info-song");
+    spotifyDiv = songInfoContainer.insert("div").attr("id", "general-info-spotify");
     lyricsDiv = songInfoContainer.insert("div").attr("id", "song-info-lyrics");
 
     generalInfoDiv.append("center").append("h2").attr("id", "song-info-name");
@@ -496,8 +487,8 @@ function createSongInfoHTML(globalParameters) {
     generalInfoDiv.append("p").text("Genre: ").append("em").attr("id", "song-info-genre");
     generalInfoDiv.append("p").text("Year: ").append("em").attr("id", "song-info-year");
     generalInfoDiv.append("p").text("Ranking: ").append("em").attr("id", "song-info-position");
-    generalInfoDiv.append("iframe").attr("id", "spotify-player").attr("src", "")
-        .attr("width", "300").attr("height", "30%").attr("frameborder", "0")
+    spotifyDiv.append("iframe").attr("id", "spotify-player").attr("src", "")
+        .attr("width", "300").attr("height", "80").attr("frameborder", "0")
         .attr("allowtransparency", "true").attr("allow", "encrypted-media");
 
     lyricsDiv.append("center").append("h3").text("Lyrics");
@@ -508,7 +499,6 @@ function createSongInfoHTML(globalParameters) {
     globalParameters.printedGenre = '';
     d3.selectAll(".genre-btn").classed("clicked-btn", false);
 }
-
 
 /**
  * showSongInformation - Adds the specific information for the given song to
@@ -611,7 +601,6 @@ function showSongInformation(song, globalParameters) {
     globalParameters.songInfoHTMLCreated = true;
 }
 
-
 /**
  * getOffsetOfFirstColoredWord - Gets teh offset of the first occurence of the
  * word of the given color in order to use it to scroll the lyrics.
@@ -627,7 +616,6 @@ function getOffsetOfFirstColoredWord(color) {
     var offset = childPos.top - parentPos.top;
     return offset
 }
-
 
 /**
  * filterData - Filters the whole data based on a time range
@@ -646,7 +634,6 @@ function filterData(data, globalParameters) {
         }
     });
 }
-
 
 /**
  * reDrawCircle - Redraws the vinyl, to be used when another time range
@@ -678,7 +665,6 @@ function reDrawCircle(globalParameters) {
             console.log(error);
         })
 }
-
 
 /**
  * drawSongTiles - Draws all the song tiles in the vinyl.
@@ -765,7 +751,6 @@ function drawSongTiles(filteredData, globalParameters) {
             return d.random_rgb;
         })
 }
-
 
 /**
  * drawSmallMiddleCircle - Drwas the small middle circle in the middle
