@@ -6,8 +6,12 @@
 | Valentin Garnier | 258259 |
 | Maina Orchampt-Mareschal | 244960 |
 
+## The Color of Music
 
-In this project we present the color of songs. This repository contains:
+
+In this project we present the color of songs! 
+
+This repository contains:
 - The data folder
 - CSV files which represents our final dataframes
 - Images from previous milestones: screenshots and sketches
