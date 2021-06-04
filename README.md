@@ -22,9 +22,9 @@ This repository contains:
 	- style.css
 	- music_color.js
 
-This repository hosts the application on github which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/) 
+This repository hosts the application on github which you can access [here](https://com-480-data-visualization.github.io/data-visualization-project-2021-pia/).
 
-Here's the access to the [screencast](https://youtu.be/5tF2HeXbs6s)
+Here's the access to the [screencast](https://youtu.be/5tF2HeXbs6s).
 
 
 [Milestone 1](#milestone-1) • [Milestone 2](#milestone-2) • [Milestone 3](#milestone-3)
