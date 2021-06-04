@@ -1,8 +1,4 @@
 
-/*
-This CSS governs the appearance of our site.
-You can find the basic concepts of CSS here: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/How_CSS_works
-*/
 
 /*
 This makes the border and padding be counted as part of the element's size.
@@ -45,6 +41,7 @@ body {
 	/* background behind the plot */
 	background-color: #c9af9d;
 }
+
 
 #left-panel {
 	width: 15%;
@@ -192,8 +189,6 @@ body {
   width: 100%;
   height: 10%;
   padding: 10px;
-  /*font-size: 0.7rem;*/
-  /*border-top: 1px solid black;*/
 }
 
 /*link style taken from https://codepen.io/samvdh/pen/MmZzyR*/
@@ -379,8 +374,6 @@ label{
 
 .colored_word {
   font-weight: bold;
-	/*font-size: 1.3rem;*/
-	/*-webkit-text-stroke: 1px black;*/
 }
 
 .navy_word {
